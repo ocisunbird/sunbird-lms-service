@@ -58,6 +58,9 @@
                         </property>
 
                     </properties>
+                    <excludes>
+                      <exclude>**/UserControllerTest.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
