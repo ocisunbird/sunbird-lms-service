@@ -36,7 +36,7 @@
                 <configuration>
                     <useSystemClassLoader>false</useSystemClassLoader>
                     <argLine>
-                        @{argLine} --illegal-access=permit
+                        @{argLine} -Xmx8192m --illegal-access=permit
                     </argLine>
                     <forkCount>0</forkCount>
                     <properties>
