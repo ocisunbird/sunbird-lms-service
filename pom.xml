@@ -39,7 +39,6 @@
                         @{argLine} -Xmx4096m --illegal-access=permit
                     </argLine>
                     <forkCount>4</forkCount>
-                    <threadCount>3</threadCount>
                     <reuseForks>true</reuseForks>
                     <forkedProcessExitTimeoutInSeconds>360</forkedProcessExitTimeoutInSeconds>
                     <properties>
@@ -49,7 +48,7 @@
                         </property>
                         <property>
                             <name>dataproviderthreadcount</name>
-                            <value>10</value>
+                            <value>30</value>
                         </property>
                         <property>
                             <name>skipAfterFailureCount</name>
