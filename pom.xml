@@ -36,9 +36,9 @@
                 <configuration>
                     <useSystemClassLoader>false</useSystemClassLoader>
                     <argLine>
-                        @{argLine} -Xmx8192m --illegal-access=permit
+                        @{argLine} -Xmx1024m --illegal-access=permit
                     </argLine>
-                    <forkCount>5</forkCount>
+                    <forkCount>10</forkCount>
                     <properties>
                         <property>
                             <name>parallel</name>
