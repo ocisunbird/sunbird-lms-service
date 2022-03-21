@@ -36,12 +36,12 @@
                 <configuration>
                     <useSystemClassLoader>false</useSystemClassLoader>
                     <argLine>
-                        @{argLine} -Xmx2048m --illegal-access=permit
+                        @{argLine} -Xmx4096m --illegal-access=permit
                     </argLine>
-                    <forkCount>3</forkCount>
+                    <forkCount>4</forkCount>
                     <threadCount>3</threadCount>
                     <reuseForks>true</reuseForks>
-                    <forkedProcessExitTimeoutInSeconds>180</forkedProcessExitTimeoutInSeconds>
+                    <forkedProcessExitTimeoutInSeconds>360</forkedProcessExitTimeoutInSeconds>
                     <properties>
                         <property>
                             <name>parallel</name>
