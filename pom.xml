@@ -38,7 +38,7 @@
                     <argLine>
                         @{argLine} -Xmx4096m --illegal-access=permit
                     </argLine>
-                    <forkCount>4</forkCount>
+                    <forkCount>0</forkCount>
                     <reuseForks>true</reuseForks>
                     <forkedProcessExitTimeoutInSeconds>360</forkedProcessExitTimeoutInSeconds>
                     <properties>
