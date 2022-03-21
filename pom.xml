@@ -39,7 +39,9 @@
                         @{argLine} -Xmx2048m --illegal-access=permit
                     </argLine>
                     <forkCount>2</forkCount>
+                    <threadCount>1</threadCount>
                     <reuseForks>true</reuseForks>
+                    <forkedProcessExitTimeoutInSeconds>180</forkedProcessExitTimeoutInSeconds>
                     <properties>
                         <property>
                             <name>parallel</name>
