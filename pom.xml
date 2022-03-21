@@ -36,9 +36,9 @@
                 <configuration>
                     <useSystemClassLoader>false</useSystemClassLoader>
                     <argLine>
-                        @{argLine} -Xmx1024m --illegal-access=permit
+                        @{argLine} -Xmx8192m --illegal-access=permit
                     </argLine>
-                    <forkCount>5</forkCount>
+                    <forkCount>0</forkCount>
                     <properties>
                         <property>
                             <name>parallel</name>
@@ -49,14 +49,9 @@
                             <value>30</value>
                         </property>
                         <property>
-                            <name>threadcount</name>
-                            <value>5</value>
-                        </property>
-                        <property>
                             <name>skipAfterFailureCount</name>
                             <value>1</value>
                         </property>
-
                     </properties>
                     <excludes>
                       <exclude>**/UserControllerTest.java</exclude>
