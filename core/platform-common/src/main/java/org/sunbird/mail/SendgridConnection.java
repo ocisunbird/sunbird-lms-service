@@ -20,6 +20,7 @@ public class SendgridConnection {
   private String password;
   private String fromEmail;
   private Session session;
+  private String emailservice;
   private Transport transport;
 
   public Transport createConnection(RequestContext context) {
@@ -29,12 +30,14 @@ public class SendgridConnection {
       userName = System.getenv(JsonKey.EMAIL_SERVER_USERNAME);
       password = System.getenv(JsonKey.EMAIL_SERVER_PASSWORD);
       fromEmail = System.getenv(JsonKey.EMAIL_SERVER_FROM);
+      emailservice = System.getenv(JsonKey.EMAIL_SERVICE_TYPE);
 
       if (StringUtils.isBlank(host)
           || StringUtils.isBlank(port)
           || StringUtils.isBlank(userName)
           || StringUtils.isBlank(password)
-          || StringUtils.isBlank(fromEmail)) {
+          || StringUtils.isBlank(fromEmail)
+          || StringUtils.isBlank(emailservice)) {
         logger.info(
             context,
             "Email setting value is not provided by Env variable=="
@@ -53,6 +56,11 @@ public class SendgridConnection {
       props.put("mail.smtp.auth", "true");
       props.put("mail.smtp.port", port);
 
+      if (emailservice.equalsIgnoreCase("OCI")) {
+        props.put("mail.smtp.auth.login.disable", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.required", "true");
+      }
       session = Session.getInstance(props, new GMailAuthenticator(userName, password));
       transport = session.getTransport("smtp");
       transport.connect(host, userName, password);
@@ -82,5 +90,6 @@ public class SendgridConnection {
     userName = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_USERNAME);
     password = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_PASSWORD);
     fromEmail = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVER_FROM);
+    emailservice = PropertiesCache.getInstance().getProperty(JsonKey.EMAIL_SERVICE_TYPE);
   }
 }
