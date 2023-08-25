@@ -128,6 +128,8 @@ public class CDACGatewaySmsProvider implements ISmsProvider {
                     "\"templateid\":\"" + dltTemplateId + "\"" +
                     "}";
 
+            logger.info(context,"jsonData:::::::::"+ jsonData);
+
             httpPost.setEntity(new StringEntity(jsonData));
             httpPost.setHeader("Content-type", "application/json");
 
