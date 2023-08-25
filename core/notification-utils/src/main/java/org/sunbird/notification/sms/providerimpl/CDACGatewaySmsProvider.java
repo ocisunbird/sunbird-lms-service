@@ -1,22 +1,32 @@
 package org.sunbird.notification.sms.providerimpl;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpEntity;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.security.KeyManagementException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.net.ssl.SSLContext;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.sunbird.logging.LoggerUtil;
 import org.sunbird.notification.sms.provider.ISmsProvider;
 import org.sunbird.notification.utils.JsonUtil;
 import org.sunbird.notification.utils.PropertiesCache;
 import org.sunbird.request.RequestContext;
-
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 public class CDACGatewaySmsProvider implements ISmsProvider {
 
@@ -96,126 +106,125 @@ public class CDACGatewaySmsProvider implements ISmsProvider {
     }
 
     public boolean sendSms(String mobileNumber, String smsText, RequestContext context) {
-
-        String recipient = mobileNumber;
-        if (recipient.length() == 10) {
-            // add country code to mobile number
-            recipient = "91" + recipient;
-        }
-
-        String encPassword = sha1(password);
-
-        String dltTemplateId = getTemplateId(smsText, CDAC_PROVIDER);
-        if (StringUtils.isBlank(dltTemplateId)) {
-            logger.info(context, "dlt template id is empty for sms : " + smsText);
-        }
-        String finalMessage = convert(smsText);
-
-        String keyOne = sha512(userName.trim() + senderId.trim() + finalMessage.trim() + deptSecureKey.trim());
-
-        HttpClient httpClient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(baseUrl);
-
+        String responseString = "";
+        SSLSocketFactory sf = null;
+        SSLContext sslcontext = null;
+        String encryptedPassword;
         try {
-            String jsonData = "{" +
-                    "\"username\":\"" + userName + "\"," +
-                    "\"password\":\"" + encPassword + "\"," +
-                    "\"senderid\":\"" + senderId + "\"," +
-                    "\"content\":\"" + finalMessage + "\"," +
-                    "\"smsservicetype\":\"unicodemsg\"," +
-                    "\"bulkmobno\":\"" + recipient + "\"," +
-                    "\"key\":\"" + keyOne + "\"," +
-                    "\"templateid\":\"" + dltTemplateId + "\"" +
-                    "}";
+            String dltTemplateId = getTemplateId(smsText, CDAC_PROVIDER);
+            sslcontext = SSLContext.getInstance("TLSv1.2");
+            sslcontext.init(null, null, null);
+            sf = new SSLSocketFactory(sslcontext, SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
 
-            logger.info(context,"jsonData:::::::::"+ jsonData);
+            Scheme scheme = new Scheme("https", 443, sf);
+            HttpClient client = new DefaultHttpClient();
 
-            httpPost.setEntity(new StringEntity(jsonData));
-            httpPost.setHeader("Content-type", "application/json");
+            client.getConnectionManager().getSchemeRegistry().register(scheme);
+            HttpPost post = new HttpPost(baseUrl);
+            encryptedPassword = MD5(password);
+            smsText = smsText.trim();
+            String genratedhashKey = hashGenerator(userName, senderId, smsText, deptSecureKey);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs.add(new BasicNameValuePair("bulkmobno", mobileNumber));
+            nameValuePairs.add(new BasicNameValuePair("senderid", senderId));
+            nameValuePairs.add(new BasicNameValuePair("content", smsText));
+            nameValuePairs.add(new BasicNameValuePair("smsservicetype", "bulkmsg"));
+            nameValuePairs.add(new BasicNameValuePair("username", userName));
+            nameValuePairs.add(new BasicNameValuePair("password", encryptedPassword));
+            nameValuePairs.add(new BasicNameValuePair("key", genratedhashKey));
+            nameValuePairs.add(new BasicNameValuePair("templateid", dltTemplateId));
 
-            HttpEntity entity = httpClient.execute(httpPost).getEntity();
-            String response = EntityUtils.toString(entity);
+            post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpResponse response = client.execute(post);
+            BufferedReader bf = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String line = "";
+            while ((line = bf.readLine()) != null) {
+                responseString = responseString + line;
+            }
+            System.out.println("responseString::::::::::::"+responseString);
+            logger.info(context,"responseString::::::"+responseString);
 
-            System.out.println(response);
-            if (StringUtils.isNotBlank(response)) {
-                logger.info(context, "CDACGatewaySmsProvider:Result:" + response);
+            if (StringUtils.isNotBlank(responseString)) {
+                logger.info(context, "CDACGatewaySmsProvider:Result:" + responseString);
                 return true;
             } else {
                 return false;
             }
+
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block e.printStackTrace();
+            logger.error(context, "NoSuchAlgorithmException occurred while sending sms.", e);
+            return false;
+        } catch (KeyManagementException e) {
+            // TODO Auto-generated catch block e.printStackTrace();
+            logger.error(context, "KeyManagementException occurred while sending sms.", e);
+            return false;
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block e.printStackTrace();
+            logger.error(context, "UnsupportedEncodingException occurred while sending sms.", e);
+            return false;
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block e.printStackTrace();
+            logger.error(context, "ClientProtocolException occurred while sending sms.", e);
+            return false;
         } catch (IOException e) {
-            logger.error(context, "Exception occurred while sending sms.", e);
+            // TODO Auto-generated catch block e.printStackTrace();
+            logger.error(context, "IOException occurred while sending sms.", e);
             return false;
         }
     }
 
-    public static String sha1(String input) {
-        // Implement SHA-1 hashing here
-//        return input; // Replace with actual implementation
-        try {
-            // Create a MessageDigest object for SHA-1
-            MessageDigest sha1Digest = MessageDigest.getInstance("SHA-1");
+    /****
+     * Method to convert Normal Plain Text Password to MD5 encrypted password
+     ***/
 
-            // Update the digest with the input bytes
-            byte[] bytes = input.getBytes();
-            sha1Digest.update(bytes);
-
-            // Get the computed hash
-            byte[] sha1Hash = sha1Digest.digest();
-
-            // Convert the byte array to a hexadecimal string
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : sha1Hash) {
-                String hex = Integer.toHexString(0xFF & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private static String MD5(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest md;
+        md = MessageDigest.getInstance("SHA-1");
+        byte[] md5 = new byte[64];
+        md.update(text.getBytes("iso-8859-1"), 0, text.length());
+        md5 = md.digest();
+        return convertedToHex(md5);
     }
 
-    public static String sha512(String input) {
-        try {
-            // Create a MessageDigest object for SHA-512
-            MessageDigest sha512Digest = MessageDigest.getInstance("SHA-512");
-
-            // Update the digest with the input bytes
-            byte[] bytes = input.getBytes();
-            sha512Digest.update(bytes);
-
-            // Get the computed hash
-            byte[] sha512Hash = sha512Digest.digest();
-
-            // Convert the byte array to a hexadecimal string
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : sha512Hash) {
-                String hex = Integer.toHexString(0xFF & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
+    private static String convertedToHex(byte[] data) {
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < data.length; i++) {
+            int halfOfByte = (data[i] >>> 4) & 0x0F;
+            int twoHalfBytes = 0;
+            do {
+                if ((0 <= halfOfByte) && (halfOfByte <= 9)) {
+                    buf.append((char) ('0' + halfOfByte));
+                } else {
+                    buf.append((char) ('a' + (halfOfByte - 10)));
                 }
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+                halfOfByte = data[i] & 0x0F;
+            } while (twoHalfBytes++ < 1);
         }
-        return null; // Handle the error case here
+        return buf.toString();
     }
 
-    public static String convert(String body) {
-        StringBuilder finalMessage = new StringBuilder();
-        for (int i = 0; i < body.length(); i++) {
-            char c = body.charAt(i);
-            int code = (int) c;
-            finalMessage.append("&#").append(code).append(";");
+    protected static String hashGenerator(String userName, String senderId, String content, String secureKey) {
+        // TODO Auto-generated method stub
+        StringBuffer finalString = new StringBuffer();
+        finalString.append(userName.trim()).append(senderId.trim()).append(content.trim()).append(secureKey.trim());
+//			logger.info("Parameters for SHA-512 : "+finalString);
+        String hashGen = finalString.toString();
+        StringBuffer sb = null;
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+            md.update(hashGen.getBytes());
+            byte byteData[] = md.digest();
+            // convert the byte to hex format method 1
+            sb = new StringBuffer();
+            for (int i = 0; i < byteData.length; i++) {
+                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+            }
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block e.printStackTrace();
+            e.printStackTrace();
         }
-        return finalMessage.toString();
+        return sb.toString();
     }
 }
