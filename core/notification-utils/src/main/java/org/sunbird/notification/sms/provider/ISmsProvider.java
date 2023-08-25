@@ -10,6 +10,7 @@ public interface ISmsProvider {
 
   String MSG_91_PROVIDER = JsonKey.MSG_91;
   String NIC_PROVIDER = JsonKey.NIC;
+  String CDAC_PROVIDER = JsonKey.CDAC;
 
   default String getTemplateId(String sms, String provider) {
     Map<String, Map<String, String>> smsTemplateConfig = SmsTemplateUtil.getSmsTemplateConfigMap();
