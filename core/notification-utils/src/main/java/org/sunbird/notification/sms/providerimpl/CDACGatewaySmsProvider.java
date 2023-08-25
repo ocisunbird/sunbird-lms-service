@@ -10,6 +10,7 @@ import org.apache.http.util.EntityUtils;
 import org.sunbird.logging.LoggerUtil;
 import org.sunbird.notification.sms.provider.ISmsProvider;
 import org.sunbird.notification.utils.JsonUtil;
+import org.sunbird.notification.utils.PropertiesCache;
 import org.sunbird.request.RequestContext;
 
 import java.io.IOException;
@@ -35,30 +36,30 @@ public class CDACGatewaySmsProvider implements ISmsProvider {
         baseUrl = System.getenv("cdac_sms_gateway_provider_base_url");
         logger.info("baseUrl from env ::::::"+baseUrl);
         if (JsonUtil.isStringNullOREmpty(baseUrl)) {
-//            baseUrl = PropertiesCache.getInstance().getProperty("nic_sms_gateway_provider_base_url");
-            baseUrl = "https://msdgweb.mgov.gov.in/esms/sendsmsrequestDLT";
+            baseUrl = PropertiesCache.getInstance().getProperty("cdac_sms_gateway_provider_base_url");
+//            baseUrl = "https://msdgweb.mgov.gov.in/esms/sendsmsrequestDLT";
             logger.info("baseUrl hardcoded ::::::"+baseUrl);
         }
         senderId = System.getenv("cdac_sms_gateway_provider_senderid");
         if (JsonUtil.isStringNullOREmpty(senderId)) {
-//            senderId = PropertiesCache.getInstance().getProperty("nic_sms_gateway_provider_senderid");
-            senderId = "IDKSHA";
+            senderId = PropertiesCache.getInstance().getProperty("cdac_sms_gateway_provider_senderid");
+//            senderId = "IDKSHA";
         }
         userName = System.getenv("cdac_sms_gateway_provider_username");
         if (JsonUtil.isStringNullOREmpty(userName)) {
-//            userName = PropertiesCache.getInstance().getProperty("nic_sms_gateway_provider_username");
-            userName ="mlasia-diksha";
+            userName = PropertiesCache.getInstance().getProperty("cdac_sms_gateway_provider_username");
+//            userName ="mlasia-diksha";
         }
         password = System.getenv("cdac_sms_gateway_provider_password");
 //        password = "dikshasp@Dic812sp";
         if (JsonUtil.isStringNullOREmpty(password)) {
-//            password = PropertiesCache.getInstance().getProperty("nic_sms_gateway_provider_password");
-            password = "dikshasp@Dic812sp";
+            password = PropertiesCache.getInstance().getProperty("cdac_sms_gateway_provider_password");
+//            password = "dikshasp@Dic812sp";
         }
         deptSecureKey = System.getenv("cdac_sms_gateway_provider_secure_key");
         if (JsonUtil.isStringNullOREmpty(deptSecureKey)) {
-//            dltEntityId = PropertiesCache.getInstance().getProperty("dlt_entity_id");
-            deptSecureKey = "67ad2244-58be-4762-be38-96d18ee2cf74";
+            deptSecureKey = PropertiesCache.getInstance().getProperty("cdac_sms_gateway_provider_secure_key");
+//            deptSecureKey = "67ad2244-58be-4762-be38-96d18ee2cf74";
         }
         return validateSettings();
     }
