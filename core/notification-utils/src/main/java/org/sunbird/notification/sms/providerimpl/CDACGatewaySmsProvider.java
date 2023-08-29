@@ -151,25 +151,9 @@ public class CDACGatewaySmsProvider implements ISmsProvider {
                 return false;
             }
 
-        } catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException | KeyManagementException | IOException e) {
             // TODO Auto-generated catch block e.printStackTrace();
-            logger.error(context, "NoSuchAlgorithmException occurred while sending sms.", e);
-            return false;
-        } catch (KeyManagementException e) {
-            // TODO Auto-generated catch block e.printStackTrace();
-            logger.error(context, "KeyManagementException occurred while sending sms.", e);
-            return false;
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block e.printStackTrace();
-            logger.error(context, "UnsupportedEncodingException occurred while sending sms.", e);
-            return false;
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block e.printStackTrace();
-            logger.error(context, "ClientProtocolException occurred while sending sms.", e);
-            return false;
-        } catch (IOException e) {
-            // TODO Auto-generated catch block e.printStackTrace();
-            logger.error(context, "IOException occurred while sending sms.", e);
+            logger.error(context, "Error occurred while sending sms: "+ e.getMessage(), e);
             return false;
         }
     }
