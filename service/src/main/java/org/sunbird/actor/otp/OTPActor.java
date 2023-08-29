@@ -50,6 +50,7 @@ public class OTPActor extends BaseActor {
 
   private void generateOTP(Request request) {
     logger.debug(request.getRequestContext(), "OTPActor:generateOTP method call start.");
+    logger.info(request.getRequestContext(), "OTPActor:generateOTP method call start.");
     String type = (String) request.getRequest().get(JsonKey.TYPE);
     String key = (String) request.getRequest().get(JsonKey.KEY);
     String userId = (String) request.getRequest().get(JsonKey.USER_ID);
@@ -70,6 +71,7 @@ public class OTPActor extends BaseActor {
         new RateLimiter[] {OtpRateLimiter.HOUR, OtpRateLimiter.DAY},
         request.getRequestContext());
 
+    logger.info(request.getRequestContext(), "OTPActor:generateOTP method call start.1231231");
     String otp;
     Map<String, Object> details = otpService.getOTPDetails(type, key, request.getRequestContext());
 
@@ -214,6 +216,7 @@ public class OTPActor extends BaseActor {
     sendOtpRequest.getRequest().put(JsonKey.OTP, otp);
     sendOtpRequest.setOperation(ActorOperations.SEND_OTP.getValue());
     try {
+      logger.info(context, "Before sending otp actor");
       sendOTPActor.tell(sendOtpRequest, self());
     } catch (Exception ex) {
       logger.error(context, "Exception while sending OTP", ex);
