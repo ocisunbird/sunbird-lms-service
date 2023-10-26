@@ -1,12 +1,16 @@
 package controllers.usermanagement;
 
 import akka.actor.ActorRef;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import controllers.BaseController;
 import controllers.usermanagement.validator.UserGetRequestValidator;
 import java.util.HashMap;
 import java.util.concurrent.CompletionStage;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.json.JSONObject;
 import org.sunbird.actor.user.validator.UserRequestValidator;
 import org.sunbird.keys.JsonKey;
 import org.sunbird.operations.ActorOperations;
@@ -108,7 +112,7 @@ public class UserController extends BaseController {
   }
 
   public CompletionStage<Result> createSSUUser(Http.Request httpRequest) {
-    return handleRequest(
+    CompletionStage<Result> userResponse= handleRequest(
         ssuUserCreateActor,
         ActorOperations.CREATE_SSU_USER.getValue(),
         httpRequest.body().asJson(),
@@ -121,7 +125,24 @@ public class UserController extends BaseController {
         null,
         true,
         httpRequest);
+      userResponse.thenAccept(x -> {
+          JSONObject json = new JSONObject(x.asScala().header().headers().get("jsonNode").get());
+          String userId = json.getJSONObject("result").getString("userId");
+          System.out.println("UserId  == " + userId);
+          ObjectNode node = (ObjectNode) httpRequest.asScala().body().asJson();
+          ObjectNode locationJson = node.with("request").with("location")
+                  .put("userId", userId);
+          JsonNode requestJson = node.set("request", locationJson);
+          System.out.println("************location json ****** = " + locationJson.toPrettyString());
+          System.out.println("************httpRequest json******* = " + requestJson.toPrettyString());
+          updateUserV3(httpRequest, requestJson);
+          System.out.println("update location data successfully for userId = " + userId);
+      });
+
+      return userResponse.thenApply(result-> result.withoutHeader("jsonNode"));
   }
+
+
 
   public CompletionStage<Result> createUserV4(Http.Request httpRequest) {
     return handleRequest(
@@ -203,7 +224,27 @@ public class UserController extends BaseController {
         true,
         httpRequest);
   }
-
+  public CompletionStage<Result> updateUserV3(Http.Request httpRequest, JsonNode requestJson) {
+      return handleRequest(
+         userUpdateActor,
+         ActorOperations.UPDATE_USER_V3.getValue(),
+         requestJson,
+         req -> {
+         Request request = (Request) req;
+         request
+           .getContext()
+           .put(JsonKey.USER_ID, Common.getFromRequest(httpRequest, Attrs.USER_ID));
+             new UserRequestValidator().validateUpdateUserRequestV3(request);
+               request
+                 .getContext()
+                  .put(JsonKey.IS_AUTH_REQ, Common.getFromRequest(httpRequest, Attrs.IS_AUTH_REQ));
+                    return null;
+         },
+         null,
+         null,
+         true,
+         httpRequest);
+  }
   public CompletionStage<Result> updateUserV3(Http.Request httpRequest) {
     return handleRequest(
         userUpdateActor,
