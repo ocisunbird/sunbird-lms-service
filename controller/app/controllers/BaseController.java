@@ -394,8 +394,7 @@ public class BaseController extends Controller {
     }
     logTelemetry(response, request);
     return Results.ok(Json.toJson(response))
-        .withHeader(HeaderParam.X_Response_Length.getName(), value)
-            .withHeader("jsonNode", Json.toJson(response).toString());
+        .withHeader(HeaderParam.X_Response_Length.getName(), value);
   }
 
   /**

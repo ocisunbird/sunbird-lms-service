@@ -112,7 +112,7 @@ public class UserController extends BaseController {
   }
 
   public CompletionStage<Result> createSSUUser(Http.Request httpRequest) {
-   CompletionStage<Result> userResponse = handleRequest(
+    return handleRequest(
         ssuUserCreateActor,
         ActorOperations.CREATE_SSU_USER.getValue(),
         httpRequest.body().asJson(),
@@ -125,21 +125,6 @@ public class UserController extends BaseController {
         null,
         true,
         httpRequest);
-      userResponse.thenAccept(x -> {
-          JSONObject json = new JSONObject(x.asScala().header().headers().get("jsonNode").get());
-          String userId = json.getJSONObject("result").getString("userId");
-          System.out.println("UserId  == " + userId);
-          ObjectNode node = (ObjectNode) httpRequest.asScala().body().asJson();
-          ObjectNode locationJson = node.with("request").with("location")
-                  .put("userId", userId);
-          JsonNode requestJson = node.set("request", locationJson);
-          System.out.println("************location json ****** = " + locationJson.toPrettyString());
-          System.out.println("************httpRequest json******* = " + requestJson.toPrettyString());
-          updateUserV4(httpRequest, requestJson);
-          System.out.println("update location data successfully for userId = " + userId);
-      });
-
-      return userResponse;
   }
 
 
