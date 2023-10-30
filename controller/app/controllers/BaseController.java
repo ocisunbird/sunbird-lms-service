@@ -393,8 +393,15 @@ public class BaseController extends Controller {
       value = "0.0";
     }
     logTelemetry(response, request);
-    return Results.ok(Json.toJson(response))
-        .withHeader(HeaderParam.X_Response_Length.getName(), value);
+    String requestPath = request.path();
+    if (requestPath.equals("/v2/user/signup")) {
+      return Results.ok(Json.toJson(response))
+              .withHeader(HeaderParam.X_Response_Length.getName(), value)
+              .withHeader("jsonNode", Json.toJson(response).toString());
+    } else {
+      return Results.ok(Json.toJson(response))
+              .withHeader(HeaderParam.X_Response_Length.getName(), value);
+    }
   }
 
   /**
