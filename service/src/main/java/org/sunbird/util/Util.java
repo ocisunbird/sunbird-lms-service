@@ -145,7 +145,7 @@ public final class Util {
   public static Map<String, Object> getUserDefaultValue() {
     Map<String, Object> user = new HashMap<>();
     user.put("avatar", null);
-    user.put("gender", null);
+//    user.put("gender", null);
     user.put("grade", null);
     user.put("language", null);
     user.put("lastLoginTime", null);

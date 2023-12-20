@@ -65,10 +65,19 @@ public class User implements Serializable {
   private String profileUserTypes;
   private String profileDetails;
 
+  private String gender;
+
   public Map<String, String> getAllTncAccepted() {
     return allTncAccepted;
   }
 
+  public String getGender() {
+    return gender;
+  }
+
+  public void setGender(String gender) {
+    this.gender = gender;
+  }
   public void setAllTncAccepted(Map<String, String> allTncAccepted) {
     this.allTncAccepted = allTncAccepted;
   }
