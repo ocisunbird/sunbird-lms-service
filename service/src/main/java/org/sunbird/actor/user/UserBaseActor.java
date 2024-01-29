@@ -217,6 +217,7 @@ public abstract class UserBaseActor extends BaseActor {
         for (Map<String, String> location : profLocList) {
           if (JsonKey.LOCATION_TYPE_SCHOOL.equals(location.get(JsonKey.LOCATION_TYPE))) {
             userMap.put(JsonKey.ORG_EXTERNAL_ID, location.get(JsonKey.CODE));
+            locationCodes.add(location.get(JsonKey.CODE));
           } else {
             locationCodes.add(location.get(JsonKey.CODE));
           }
