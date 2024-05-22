@@ -143,7 +143,8 @@ public class SearchHandlerActor extends BaseActor {
     Map<String, Object> userDefaultFieldValue = Util.getUserDefaultValue();
     getDefaultValues(userDefaultFieldValue, fields);
     for (Map<String, Object> userMap : userMapList) {
-      UserUtility.decryptUserDataFrmES(userMap);
+      //UserUtility.decryptUserDataFrmES(userMap);
+      UserUtility.decryptUserDataFrmES(userMap,request.isUserDeleteCalled());
       if (!searchVersion.equalsIgnoreCase(ActorOperations.USER_SEARCH_V3.getValue())) {
         updateUserSearchResponseWithOrgLevelRole(userMap, request.getRequestContext());
       }

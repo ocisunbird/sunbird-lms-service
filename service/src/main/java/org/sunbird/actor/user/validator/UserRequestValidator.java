@@ -297,7 +297,20 @@ public class UserRequestValidator extends BaseRequestValidator {
     }
     checkEmptyPhoneAndEmail(userRequest);
     externalIdsValidation(userRequest, JsonKey.UPDATE);
-    phoneValidation(userRequest);
+    //157628 Openforge
+    //phoneValidation(userRequest);
+    logger.info("calling user request" +userRequest.getRequest().get("userDeleteCalled")+" userRequest "+userRequest.get("userDeleteCalled"));
+    boolean userDeleteCalled = false;
+    Object object = userRequest.getRequest().get("userDeleteCalled");
+    if(object!=null) {
+      logger.info("UserDeleted Flga status "+object.toString());
+      userDeleteCalled = (boolean)object;
+    }
+    userRequest.setUserDeleteCalled(userDeleteCalled);
+    logger.info("validateUpdateUserRequest userDeleteCalled :"+userDeleteCalled);
+    if(!userDeleteCalled){
+      phoneValidation(userRequest);
+    }
     updateUserBasicValidation(userRequest);
     validateUserOrgField(userRequest);
     if ((null == userRequest.getRequest().get(JsonKey.DOB_VALIDATION_DONE))) {

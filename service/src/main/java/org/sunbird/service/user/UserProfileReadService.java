@@ -118,7 +118,8 @@ public class UserProfileReadService {
     String encEmail = (String) result.get(JsonKey.EMAIL);
     String encPhone = (String) result.get(JsonKey.PHONE);
 
-    UserUtility.decryptUserDataFrmES(result);
+    //UserUtility.decryptUserDataFrmES(result);
+    UserUtility.decryptUserDataFrmES(result,actorMessage.isUserDeleteCalled());
     // Its used for Private user read api to display encoded email and encoded phone in api response
     if (isPrivate) {
       result.put((JsonKey.ENC_PHONE), encPhone);

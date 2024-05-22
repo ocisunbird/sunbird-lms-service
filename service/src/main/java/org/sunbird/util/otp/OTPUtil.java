@@ -90,6 +90,7 @@ public final class OTPUtil {
         JsonKey.INSTALLATION_NAME,
         ProjectUtil.getConfigValue(JsonKey.SUNBIRD_INSTALLATION_DISPLAY_NAME));
     String sms = "";
+    System.out.println("OTPUtil TemplateId "+templateId);
     if (StringUtils.isBlank(templateId)) {
       sms = otpService.getSmsBody(JsonKey.VERIFY_PHONE_OTP_TEMPLATE, smsTemplate, context);
     } else if (StringUtils.equals(JsonKey.WARD_LOGIN_OTP_TEMPLATE_ID, templateId)) {
@@ -98,6 +99,9 @@ public final class OTPUtil {
       sms = otpService.getSmsBody(JsonKey.OTP_PHONE_RESET_PASSWORD_TEMPLATE, smsTemplate, context);
     } else if (StringUtils.equals(JsonKey.CONTACT_UPDATE_TEMPLATE_ID, templateId)) {
       sms = otpService.getSmsBody(JsonKey.OTP_CONTACT_UPDATE_TEMPLATE_SMS, smsTemplate, context);
+    } else if (StringUtils.equals(JsonKey.ACCOUNT_DELETE_TEMPLATE_ID, templateId)) {
+      System.out.println("Delete User API Called "+JsonKey.ACCOUNT_DELETE_TEMPLATE_ID);
+      sms = otpService.getSmsBody(JsonKey.ACCOUNT_DELETE_TEMPLATE_SMS, smsTemplate, context);
     }
     logger.debug(context, "OTPUtil:sendOTPViaSMS: SMS text = " + sms);
 

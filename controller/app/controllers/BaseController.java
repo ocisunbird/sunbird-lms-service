@@ -69,7 +69,11 @@ public class BaseController extends Controller {
   private org.sunbird.request.Request initRequest(
       org.sunbird.request.Request request, String operation, Request httpRequest) {
     request.setOperation(operation);
-
+    String userDeleteParam = httpRequest.getQueryString("userdelete");
+    System.out.println("init request for delete User :"+userDeleteParam);
+    if(StringUtils.isNotBlank(userDeleteParam)){
+      request.setUserDeleteCalled(Boolean.parseBoolean(userDeleteParam));
+    }
     String requestId = Common.getFromRequest(httpRequest, Attrs.X_REQUEST_ID);
     request.setRequestId(requestId);
     request.getParams().setMsgid(requestId);

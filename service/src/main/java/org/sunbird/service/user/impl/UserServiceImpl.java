@@ -229,7 +229,8 @@ public class UserServiceImpl implements UserService {
     }
     for (Map<String, Object> userMap :
         (List<Map<String, Object>>) response.getResult().get(JsonKey.RESPONSE)) {
-      UserUtility.decryptUserDataFrmES(userMap);
+      //UserUtility.decryptUserDataFrmES(userMap);
+      UserUtility.decryptUserDataFrmES(userMap,false);
     }
     return response;
   }

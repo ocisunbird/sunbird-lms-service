@@ -39,6 +39,14 @@ public class Request implements Serializable {
   private int env;
 
   private Integer timeout; // in seconds
+  private boolean userDeleteCalled;
+  public boolean isUserDeleteCalled() {
+    return userDeleteCalled;
+  }
+  public void setUserDeleteCalled(boolean userDeleteCalled) {
+    this.userDeleteCalled = userDeleteCalled;
+  }
+
 
   public Request() {
     this.context = new WeakHashMap<>();

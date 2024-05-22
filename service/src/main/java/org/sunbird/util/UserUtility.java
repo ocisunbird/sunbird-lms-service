@@ -70,13 +70,13 @@ public final class UserUtility {
     return maskingService.isMasked(data);
   }
 
-  public static Map<String, Object> decryptUserDataFrmES(Map<String, Object> userMap) {
+  public static Map<String, Object> decryptUserDataFrmES(Map<String, Object> userMap,boolean isUserDeleteCalled) {
     DecryptionService service = ServiceFactory.getDecryptionServiceInstance();
     // Decrypt user basic info
     for (String key : userKeyToDecrypt) {
       if (userMap.containsKey(key)) {
         if (userKeysToMasked.contains(key)) {
-          userMap.put(key, maskEmailOrPhone((String) userMap.get(key), key));
+          userMap.put(key, maskEmailOrPhone((String) userMap.get(key), key,isUserDeleteCalled));
         } else {
           userMap.put(key, service.decryptData((String) userMap.get(key), null));
         }
@@ -102,14 +102,23 @@ public final class UserUtility {
     return service.encryptData(data, null);
   }
 
-  public static String maskEmailOrPhone(String encryptedEmailOrPhone, String type) {
+  public static String maskEmailOrPhone(String encryptedEmailOrPhone, String type,boolean isUserDeleteCalled) {
     if (StringUtils.isEmpty(encryptedEmailOrPhone)) {
       return StringUtils.EMPTY;
     }
-    if (phoneMaskedAttributes.contains(type)) {
-      return maskingService.maskPhone(decryptionService.decryptData(encryptedEmailOrPhone, null));
-    } else if (emailMaskedAttributes.contains(type)) {
-      return maskingService.maskEmail(decryptionService.decryptData(encryptedEmailOrPhone, null));
+    if(isUserDeleteCalled){
+      if (phoneMaskedAttributes.contains(type)) {
+        return decryptionService.decryptData(encryptedEmailOrPhone, null);
+      } else if (emailMaskedAttributes.contains(type)) {
+        return decryptionService.decryptData(encryptedEmailOrPhone, null);
+      }
+    }
+    else {
+      if (phoneMaskedAttributes.contains(type)) {
+        return maskingService.maskPhone(decryptionService.decryptData(encryptedEmailOrPhone, null));
+      } else if (emailMaskedAttributes.contains(type)) {
+        return maskingService.maskEmail(decryptionService.decryptData(encryptedEmailOrPhone, null));
+      }
     }
     return StringUtils.EMPTY;
   }
