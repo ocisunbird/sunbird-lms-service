@@ -20,7 +20,8 @@ public class OtpRequestValidator extends BaseRequestValidator {
       Arrays.asList(
           JsonKey.RESET_PASSWORD_TEMPLATE_ID,
           JsonKey.WARD_LOGIN_OTP_TEMPLATE_ID,
-          JsonKey.CONTACT_UPDATE_TEMPLATE_ID);
+          JsonKey.CONTACT_UPDATE_TEMPLATE_ID,
+          JsonKey.ACCOUNT_DELETE_TEMPLATE_ID);
 
   public void validateGenerateOtpRequest(Request otpRequest) {
     commonValidation(otpRequest, false);
@@ -28,7 +29,9 @@ public class OtpRequestValidator extends BaseRequestValidator {
   }
 
   private void validateTemplateId(Request otpRequest) {
+    System.out.println("OtpRequestValidator otpRequest "+otpRequest.toString());
     String templateId = (String) otpRequest.getRequest().get(JsonKey.TEMPLATE_ID);
+    System.out.println("OtpRequestValidator templateId "+templateId);
     if (StringUtils.isNotBlank(templateId) && !allowedTemplate.contains(templateId)) {
       throw new ProjectCommonException(
           ResponseCode.invalidIdentifier,
