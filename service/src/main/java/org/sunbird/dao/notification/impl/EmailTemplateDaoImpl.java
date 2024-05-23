@@ -41,11 +41,13 @@ public class EmailTemplateDaoImpl implements EmailTemplateDao {
                 JsonKey.SUNBIRD, EMAIL_TEMPLATE, idList, JsonKey.NAME, context);
     List<Map<String, Object>> emailTemplateList =
         (List<Map<String, Object>>) response.get(JsonKey.RESPONSE);
+    System.out.println("SMSTemplateProvider emailTemplateList "+emailTemplateList);
     Map<String, Object> map = Collections.emptyMap();
     if (CollectionUtils.isNotEmpty(emailTemplateList)) {
       map = emailTemplateList.get(0);
     }
     String TEMPLATE = "template";
+    System.out.println("SMSTemplateProvider (String) map.get(TEMPLATE) "+(String) map.get(TEMPLATE));
     return (String) map.get(TEMPLATE);
   }
 
