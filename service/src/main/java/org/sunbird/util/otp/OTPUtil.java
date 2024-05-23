@@ -143,6 +143,7 @@ public final class OTPUtil {
     List<String> reciptientsMail = new ArrayList<>();
     reciptientsMail.add((String) emailTemplateMap.get(JsonKey.EMAIL));
     emailTemplateMap.put(JsonKey.RECIPIENT_EMAILS, reciptientsMail);
+    logger.info("Email Template called "+templateId);
     if (StringUtils.isBlank(templateId)) {
       emailTemplateMap.put(JsonKey.EMAIL_TEMPLATE_TYPE, JsonKey.OTP);
       emailTemplateMap.put(JsonKey.SUBJECT, JsonKey.EMAIL_VERIFICATION_SUBJECT);
@@ -152,11 +153,14 @@ public final class OTPUtil {
       emailTemplateMap.put(JsonKey.SUBJECT, ProjectUtil.formatMessage(emailSubject, envName));
     } else if (StringUtils.equalsIgnoreCase(JsonKey.RESET_PASSWORD_TEMPLATE_ID, templateId)) {
       emailTemplateMap.put(JsonKey.EMAIL_TEMPLATE_TYPE, JsonKey.OTP_EMAIL_RESET_PASSWORD_TEMPLATE);
-      emailTemplateMap.put(
-          JsonKey.SUBJECT, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_RESET_PASS_MAIL_SUBJECT));
+      emailTemplateMap.put(JsonKey.SUBJECT, ProjectUtil.getConfigValue(JsonKey.SUNBIRD_RESET_PASS_MAIL_SUBJECT));
     } else if (StringUtils.equalsIgnoreCase(JsonKey.CONTACT_UPDATE_TEMPLATE_ID, templateId)) {
       emailTemplateMap.put(JsonKey.EMAIL_TEMPLATE_TYPE, JsonKey.OTP_CONTACT_UPDATE_TEMPLATE_EMAIL);
       emailTemplateMap.put(JsonKey.SUBJECT, JsonKey.CONTACT_DETAILS_UPDATE_VERIFICATION_SUBJECT);
+    } else if (StringUtils.equalsIgnoreCase(JsonKey.ACCOUNT_DELETE_TEMPLATE_ID, templateId)) {
+      logger.info("Delete Email Template called "+JsonKey.ACCOUNT_DELETE_TEMPLATE_ID);
+      emailTemplateMap.put(JsonKey.EMAIL_TEMPLATE_TYPE, JsonKey.ACCOUNT_DELETE_TEMPLATE_SMS);
+      emailTemplateMap.put(JsonKey.SUBJECT, JsonKey.ACCOUNT_DELETE_TEMPLATE_SUBJECT);
     }
     emailTemplateMap.put(JsonKey.INSTALLATION_NAME, envName);
     request = new Request();
