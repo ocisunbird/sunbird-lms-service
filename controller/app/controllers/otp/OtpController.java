@@ -18,7 +18,6 @@ public class OtpController extends BaseController {
   private ActorRef otpActor;
 
   public CompletionStage<Result> generateOTP(Http.Request httpRequest) {
-      System.out.println("OTPController HttpRequest "+httpRequest.toString());
     return handleRequest(
         otpActor,
         ActorOperations.GENERATE_OTP.getValue(),
