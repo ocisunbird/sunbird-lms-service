@@ -17,9 +17,7 @@ public interface ISmsProvider {
     Map<String, Map<String, String>> smsTemplateConfig = SmsTemplateUtil.getSmsTemplateConfigMap();
     Map<String, String> providerTemplateConfig = smsTemplateConfig.get(provider);
     for (Map.Entry<String, String> entry : providerTemplateConfig.entrySet()) {
-      System.out.println("**************Template id :"+entry.getValue()+"********* Template Key :"+entry.getKey());
       String pattern = entry.getKey().replaceAll("\\$[^ .]+", ".*?");
-      System.out.println("**************Pattern :"+pattern);
       if (sms.matches(pattern)) {
         System.out.println("SMS Pattern matched for :"+entry.getValue());
         return entry.getValue();
