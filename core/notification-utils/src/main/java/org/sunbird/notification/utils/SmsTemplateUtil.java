@@ -19,17 +19,12 @@ public class SmsTemplateUtil {
     Response response =
         cassandraOperation.getRecordById(
             JsonKey.SUNBIRD, JsonKey.SYSTEM_SETTINGS_DB, JsonKey.SMS_TEMPLATE_CONFIG, null);
-    logger.info("SmsTemplateUtil response :"+response.toString());
     List<Map<String, Object>> responseList =
         (List<Map<String, Object>>) response.get(JsonKey.RESPONSE);
-    logger.info("SmsTemplateUtil responseList :"+responseList);
     if (null != responseList && !responseList.isEmpty()) {
       Map<String, Object> resultMap = responseList.get(0);
-      logger.info("SmsTemplateUtil resultMap :"+resultMap);
       String smsTemplateConfigString = (String) resultMap.get(JsonKey.VALUE);
-      logger.info("SmsTemplateUtil smsTemplateConfigString :"+smsTemplateConfigString);
       if (StringUtils.isNotBlank(smsTemplateConfigString)) {
-        logger.info("SmsTemplateUtil status :"+StringUtils.isNotBlank(smsTemplateConfigString));
         ObjectMapper mapper = new ObjectMapper();
         try {
           return mapper.readValue(smsTemplateConfigString, Map.class);
