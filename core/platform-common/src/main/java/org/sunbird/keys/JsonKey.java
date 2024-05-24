@@ -606,7 +606,7 @@ public final class JsonKey {
   public static final String OTP_CONTACT_UPDATE_TEMPLATE_EMAIL = "otpContactUpdateTemplateEmail";
   public static final String ACCOUNT_DELETE_TEMPLATE_ID = "1307171619784284292";
   public static final String ACCOUNT_DELETE_TEMPLATE_SMS = "1307171619784284292";
-  public static final String ACCOUNT_DELETE_TEMPLATE_EMAIL = "1307171619784284292";
+  public static final String ACCOUNT_DELETE_TEMPLATE_EMAIL = "deleteUserAccountTemplate";
   public static final String ACCOUNT_DELETE_TEMPLATE_SUBJECT = "OTP to delete DIKSHA Profile";
   public static final String OTP_CONTACT_UPDATE_TEMPLATE_SMS = "otpContactUpdateTemplateSms";
   public static final String CONTACT_DETAILS_UPDATE_VERIFICATION_SUBJECT =
