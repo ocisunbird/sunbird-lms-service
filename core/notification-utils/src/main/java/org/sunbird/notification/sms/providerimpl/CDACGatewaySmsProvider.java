@@ -112,6 +112,7 @@ public class CDACGatewaySmsProvider implements ISmsProvider {
         String encryptedPassword;
         try {
             String dltTemplateId = getTemplateId(smsText, CDAC_PROVIDER);
+            logger.info("CDACGatewaySmsProvider dltTemplateId : "+dltTemplateId);
             sslcontext = SSLContext.getInstance("TLSv1.2");
             sslcontext.init(null, null, null);
             sf = new SSLSocketFactory(sslcontext, SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
@@ -141,8 +142,7 @@ public class CDACGatewaySmsProvider implements ISmsProvider {
             while ((line = bf.readLine()) != null) {
                 responseString = responseString + line;
             }
-            System.out.println("responseString::::::::::::"+responseString);
-            logger.info(context,"responseString::::::"+responseString);
+            logger.info(context,"CDACGatewaySmsProvider responseString::::::"+responseString);
 
             if (StringUtils.isNotBlank(responseString)) {
                 logger.info(context, "CDACGatewaySmsProvider:Result:" + responseString);

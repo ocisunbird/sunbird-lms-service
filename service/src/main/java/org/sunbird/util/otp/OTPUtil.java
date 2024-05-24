@@ -103,7 +103,7 @@ public final class OTPUtil {
       System.out.println("Delete User API Called "+JsonKey.ACCOUNT_DELETE_TEMPLATE_ID);
       sms = otpService.getSmsBody(JsonKey.ACCOUNT_DELETE_TEMPLATE_SMS, smsTemplate, context);
     }
-    logger.debug(context, "OTPUtil:sendOTPViaSMS: SMS text = " + sms);
+    logger.info(context, "OTPUtil:sendOTPViaSMS: SMS text = " + sms);
 
     String countryCode;
     if (StringUtils.isBlank((String) otpMap.get(JsonKey.COUNTRY_CODE))) {
@@ -113,7 +113,7 @@ public final class OTPUtil {
     }
     ISmsProvider smsProvider = SMSFactory.getInstance();
 
-    logger.debug(
+    logger.info(
         context,
         "OTPUtil:sendOTPViaSMS: SMS OTP text = "
             + sms
