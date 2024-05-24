@@ -159,7 +159,7 @@ public final class OTPUtil {
       emailTemplateMap.put(JsonKey.SUBJECT, JsonKey.CONTACT_DETAILS_UPDATE_VERIFICATION_SUBJECT);
     } else if (StringUtils.equalsIgnoreCase(JsonKey.ACCOUNT_DELETE_TEMPLATE_ID, templateId)) {
       logger.info("Delete Email Template called "+JsonKey.ACCOUNT_DELETE_TEMPLATE_ID);
-      emailTemplateMap.put(JsonKey.EMAIL_TEMPLATE_TYPE, JsonKey.ACCOUNT_DELETE_TEMPLATE_SMS);
+      emailTemplateMap.put(JsonKey.EMAIL_TEMPLATE_TYPE, JsonKey.ACCOUNT_DELETE_TEMPLATE_EMAIL);
       emailTemplateMap.put(JsonKey.SUBJECT, JsonKey.ACCOUNT_DELETE_TEMPLATE_SUBJECT);
     }
     emailTemplateMap.put(JsonKey.INSTALLATION_NAME, envName);
