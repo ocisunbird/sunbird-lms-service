@@ -133,7 +133,11 @@ public class CDACGatewaySmsProvider implements ISmsProvider {
             nameValuePairs.add(new BasicNameValuePair("username", userName));
             nameValuePairs.add(new BasicNameValuePair("password", encryptedPassword));
             nameValuePairs.add(new BasicNameValuePair("key", genratedhashKey));
-            nameValuePairs.add(new BasicNameValuePair("templateid", dltTemplateId));
+            if(StringUtils.containsIgnoreCase(smsText,"to delete your DIKSHA account")){
+                nameValuePairs.add(new BasicNameValuePair("templateid", "1307171619784284292"));
+            } else{
+                nameValuePairs.add(new BasicNameValuePair("templateid", dltTemplateId));
+            }
 
             post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse response = client.execute(post);
