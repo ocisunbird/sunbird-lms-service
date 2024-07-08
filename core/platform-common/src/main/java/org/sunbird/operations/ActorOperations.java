@@ -146,7 +146,10 @@ public enum ActorOperations {
   READ_LOCATION_TYPE("readLocationType", "LOCTYPRED"),
   UPSERT_LOCATION_TO_ES("upsertLocationDataToES", "LBKGUPSRT"),
   DELETE_LOCATION_FROM_ES("deleteLocationDataFromES", "LBKGDEL"),
-  USER_CURRENT_LOGIN("userCurrentLogin", "USRLOG");
+  USER_CURRENT_LOGIN("userCurrentLogin", "USRLOG"),
+  //Chat With Books
+  CHAT_WITH_BOOKS_SAVE("chatWithBooksSave", "CHATSAVE"),
+  CHAT_WITH_BOOKS_READ("chatWithBooksRead", "CHATREAD");
 
   private String value;
 

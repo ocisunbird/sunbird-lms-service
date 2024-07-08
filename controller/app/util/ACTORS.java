@@ -2,6 +2,7 @@ package util;
 
 import org.sunbird.actor.BackgroundJobManager;
 import org.sunbird.actor.bulkupload.*;
+import org.sunbird.actor.chatwithbooks.ChatWithBooksActor;
 import org.sunbird.actor.feed.UserFeedActor;
 import org.sunbird.actor.fileuploadservice.FileUploadServiceActor;
 import org.sunbird.actor.health.HealthActor;
@@ -101,7 +102,9 @@ public enum ACTORS {
   USER_TNC_ACTOR(UserTnCActor.class, "user_tnc_actor"),
   USER_TYPE_ACTOR(UserTypeActor.class, "user_type_actor"),
   USER_UPDATE_ACTOR(UserUpdateActor.class, "user_update_actor"),
-  BACKGROUND_JOB_MANAGER_ACTOR(BackgroundJobManager.class, "background_job_manager_actor");
+  BACKGROUND_JOB_MANAGER_ACTOR(BackgroundJobManager.class, "background_job_manager_actor"),
+  // Chat With Books Actor
+  CHAT_WITH_BOOKS_ACTOR(ChatWithBooksActor.class, "chat_with_books_actor");
 
   ACTORS(Class clazz, String name) {
     actorClass = clazz;

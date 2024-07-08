@@ -133,3 +133,6 @@ GET     /v1/system/settings/get/:field          @controllers.systemsettings.Syst
 GET     /v1/system/settings/list                @controllers.systemsettings.SystemSettingsController.getAllSystemSettings(request: play.mvc.Http.Request)
 POST    /v1/system/settings/set                 @controllers.systemsettings.SystemSettingsController.setSystemSetting(request: play.mvc.Http.Request)
 
+#Chat With Books API
+POST    /chatwithbooks/v1/save                  @controllers.chatwithbooks.ChatWithBooksController.saveChatBookData(request: play.mvc.Http.Request)
+

@@ -247,6 +247,7 @@ public final class JsonKey {
   public static final String SUCCESS = "SUCCESS";
   public static final String SUCCESS_RESULT = "successResult";
   public static final String SUNBIRD = "sunbird";
+  public static final String CHAT_WITH_BOOKS ="chatwithbooks";
   public static final String SUNBIRD_ALLOWED_LOGIN = "sunbird_allowed_login";
   public static final String SUNBIRD_API_BASE_URL = "sunbird_api_base_url";
   public static final String SUNBIRD_CASSANDRA_IP = "sunbird_cassandra_host";
@@ -307,6 +308,7 @@ public final class JsonKey {
   public static final String USER_DECLARATION_DB = "user_declarations";
   public static final String VALUE = "value";
   public static final String VERSION = "version";
+  public static final String VERSION_1 = "v1";
   public static final String WELCOME_MESSAGE = "welcomeMessage";
   public static final String SUNBIRD_HEALTH_CHECK_ENABLE = "sunbird_health_check_enable";
   public static final String HEALTH = "health";
