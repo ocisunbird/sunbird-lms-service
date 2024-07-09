@@ -10,6 +10,7 @@ import org.sunbird.service.feed.impl.FeedServiceImpl;
 import org.sunbird.telemetry.dto.TelemetryEnvKey;
 import org.sunbird.util.Util;
 
+import java.time.Instant;
 import java.util.Map;
 
 public class ChatWithBooksActor extends BaseActor {
@@ -37,11 +38,7 @@ public class ChatWithBooksActor extends BaseActor {
     private void chatWithBooksSave(Request actorMessage) {
         actorMessage.toLower();
         Map<String, Object> chatMapWithBooksMap = actorMessage.getRequest();
-        logger.info("Request Body : "+actorMessage.getRequestContext());
-        String userId = (String) actorMessage.getContext().get(JsonKey.REQUESTED_BY);
-        logger.info("User ID : "+userId);
-        chatMapWithBooksMap.put(JsonKey.CREATED_BY, userId);
-        chatMapWithBooksMap.put("updatedOn", System.currentTimeMillis());
+        chatMapWithBooksMap.put("updatedOn", Instant.now());
         //Saving the chat query in DB
         logger.info("Insert Query :"+chatMapWithBooksMap.toString());
         userService.chatWithBookSave(chatMapWithBooksMap,actorMessage.getRequestContext());

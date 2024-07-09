@@ -25,7 +25,6 @@ public class ChatWithBooksController extends BaseController {
                 httpRequest.body().asJson(),
                 req -> {
                     Request request = (Request) req;
-                    //new UserRequestValidator().validateUserCreateV4(request);
                     request.getContext().put(JsonKey.VERSION, JsonKey.VERSION_1);
                     return null;
                 },
