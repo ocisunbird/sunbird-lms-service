@@ -38,7 +38,7 @@ public class ChatWithBooksActor extends BaseActor {
     private void chatWithBooksSave(Request actorMessage) {
         actorMessage.toLower();
         Map<String, Object> chatMapWithBooksMap = actorMessage.getRequest();
-        chatMapWithBooksMap.put("updatedOn", Instant.now());
+        chatMapWithBooksMap.put("updatedOn", Instant.now().getEpochSecond());
         //Saving the chat query in DB
         logger.info("Insert Query :"+chatMapWithBooksMap.toString());
         userService.chatWithBookSave(chatMapWithBooksMap,actorMessage.getRequestContext());
