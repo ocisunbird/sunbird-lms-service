@@ -46,7 +46,7 @@ public class ChatWithBooksActor extends BaseActor {
         //Saving the chat query in DB
         logger.info("Insert Query :"+chatMapWithBooksMap.toString());
         Response response = chatWithBooksService.chatWithBookSave(chatMapWithBooksMap, actorMessage.getRequestContext());
-        response.put(JsonKey.ID, JsonKey.CHAT_WITH_BOOKS_SAVE_API);
+        response.put(JsonKey.ID, chatMapWithBooksMap.get(JsonKey.ID));
         if (JsonKey.SUCCESS.equalsIgnoreCase((String) response.get(JsonKey.RESPONSE))) {
             logger.info(actorMessage.getRequestContext(), "Search query inserted successfully in Database");
             sender().tell(response, self());
