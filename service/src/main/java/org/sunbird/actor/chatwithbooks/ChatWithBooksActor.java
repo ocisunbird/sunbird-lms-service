@@ -11,7 +11,8 @@ import org.sunbird.telemetry.dto.TelemetryEnvKey;
 import org.sunbird.util.ProjectUtil;
 import org.sunbird.util.Util;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,16 +41,14 @@ public class ChatWithBooksActor extends BaseActor {
     private void chatWithBooksSave(Request actorMessage) {
         actorMessage.toLower();
         Map<String, Object> chatMapWithBooksMap = actorMessage.getRequest();
-        chatMapWithBooksMap.put("updatedOn", new Date().getTime());
-        String userId = ProjectUtil.generateUniqueId();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        chatMapWithBooksMap.put("SearchQueryDate", LocalDateTime.now().format(format));
         //Saving the chat query in DB
         logger.info("Insert Query :"+chatMapWithBooksMap.toString());
         Response response = chatWithBooksService.chatWithBookSave(chatMapWithBooksMap, actorMessage.getRequestContext());
-        logger.info("Success Data inserted into DB");
-        response.put(JsonKey.ID, chatMapWithBooksMap.get(JsonKey.ID));
-        Map<String, Object> esResponse = new HashMap<>();
+        response.put(JsonKey.ID, JsonKey.CHAT_WITH_BOOKS_SAVE_API);
         if (JsonKey.SUCCESS.equalsIgnoreCase((String) response.get(JsonKey.RESPONSE))) {
-            logger.info(actorMessage.getRequestContext(), "Insert the data in DB successfully");
+            logger.info(actorMessage.getRequestContext(), "Search query inserted successfully in Database");
             sender().tell(response, self());
         }else {
             logger.info(actorMessage.getRequestContext(), "DB Status Failed");
