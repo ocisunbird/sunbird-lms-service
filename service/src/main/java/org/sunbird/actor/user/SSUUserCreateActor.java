@@ -50,6 +50,7 @@ public class SSUUserCreateActor extends UserBaseActor {
 
   /** This method will create user in user in cassandra and update to ES as well at same time. */
   private void createSSUUser(Request actorMessage) {
+    logger.info("*****DIKSHA***** Actor Request"+actorMessage.toString());
     logger.debug(
         actorMessage.getRequestContext(), "SSUUserCreateActor:createSSUUser: User creation starts");
     actorMessage.toLower();

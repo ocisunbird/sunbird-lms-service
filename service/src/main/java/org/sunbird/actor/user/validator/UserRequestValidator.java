@@ -46,6 +46,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   public void validateCreateUserRequest(Request userRequest) {
+    logger.info("*****DIKSHA**** UserRequest"+userRequest.toString());
     externalIdsValidation(userRequest, JsonKey.CREATE);
     fieldsNotAllowed(
         Arrays.asList(
@@ -105,6 +106,10 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   public void validateUserCreateV3(Request userRequest) {
+    logger.info("*****DIKSHA**** UserRequest"+userRequest.toString());
+    logger.info("*****DIKSHA**** email "+userRequest.getRequest().get(JsonKey.EMAIL));
+    logger.info("*****DIKSHA**** phone "+userRequest.getRequest().get(JsonKey.PHONE));
+    logger.info("*****DIKSHA**** Managed By "+userRequest.getRequest().get(JsonKey.MANAGED_BY));
     validateParam(
         (String) userRequest.getRequest().get(JsonKey.FIRST_NAME),
         ResponseCode.mandatoryParamsMissing,
@@ -125,6 +130,7 @@ public class UserRequestValidator extends BaseRequestValidator {
       ProjectCommonException.throwClientErrorException(
           ResponseCode.OnlyEmailorPhoneorManagedByRequired);
     }
+    logger.info("*****DIKSHA**** userRequest"+userRequest.toString());
     validatePassword((String) userRequest.getRequest().get(JsonKey.PASSWORD));
     if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
       validateEmail((String) userRequest.getRequest().get(JsonKey.EMAIL));
@@ -206,7 +212,7 @@ public class UserRequestValidator extends BaseRequestValidator {
    * @param userRequest
    */
   public void createUserBasicValidation(Request userRequest) {
-
+    logger.info("*****DIKSHA**** UserRequestValidator"+userRequest);
     createUserBasicProfileFieldsValidation(userRequest);
     if (userRequest.getRequest().containsKey(JsonKey.ROLES)
         && null != userRequest.getRequest().get(JsonKey.ROLES)
@@ -220,6 +226,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void createUserBasicProfileFieldsValidation(Request userRequest) {
+    logger.info("*****DIKSHA**** UserRequestValidator 2"+userRequest);
     validateParam(
         (String) userRequest.getRequest().get(JsonKey.FIRST_NAME),
         ResponseCode.mandatoryParamsMissing,
@@ -361,6 +368,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   public void externalIdsValidation(Request userRequest, String operation) {
+    logger.info("*****DIKSHA**** externalIdsValidation "+userRequest.toString()+ " operation "+operation);
     if (userRequest.getRequest().containsKey(JsonKey.EXTERNAL_IDS)
         && (null != userRequest.getRequest().get(JsonKey.EXTERNAL_IDS))) {
       if (!(userRequest.getRequest().get(JsonKey.EXTERNAL_IDS) instanceof List)) {
@@ -381,6 +389,7 @@ public class UserRequestValidator extends BaseRequestValidator {
 
   private void validateIndividualExternalId(
       String operation, List<Map<String, String>> externalIds) {
+    logger.info("*****DIKSHA**** validateIndividualExternalId operation "+operation+" externalIds"+externalIds.get(0));
     // valid operation type for externalIds in user api.
     List<String> operationTypeList = Arrays.asList(JsonKey.ADD, JsonKey.REMOVE, JsonKey.EDIT);
     externalIds
@@ -422,6 +431,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void validateExternalIdMandatoryParam(String param, String paramValue) {
+    logger.info("*****DIKSHA**** validateExternalIdMandatoryParam "+param+" param Value "+paramValue);
     if (StringUtils.isBlank(paramValue)) {
       throw new ProjectCommonException(
           ResponseCode.mandatoryParamsMissing,
@@ -629,6 +639,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void checkForDuplicateExternalId(List<Map<String, String>> list) {
+    logger.info("*****DIKSHA**** checkForDuplicateExternalId "+list.get(0));
     List<Map<String, String>> checkedList = new ArrayList<>();
     for (Map<String, String> externalId : list) {
       for (Map<String, String> checkedExternalId : checkedList) {

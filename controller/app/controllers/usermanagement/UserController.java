@@ -61,6 +61,7 @@ public class UserController extends BaseController {
   private ActorRef userSelfDeclarationManagementActor;
 
   public CompletionStage<Result> createUser(Http.Request httpRequest) {
+      System.out.println("*****DIKSHA**** UserController "+httpRequest.toString());
     return handleRequest(
         ssoUserCreateActor,
         ActorOperations.CREATE_USER.getValue(),
@@ -95,6 +96,7 @@ public class UserController extends BaseController {
   }
 
   public CompletionStage<Result> createUserV3(Http.Request httpRequest) {
+      System.out.println("*****DIKSHA**** UserController "+httpRequest.toString());
     return handleRequest(
         ssuUserCreateActor,
         ActorOperations.CREATE_USER_V3.getValue(),
@@ -112,12 +114,14 @@ public class UserController extends BaseController {
   }
 
   public CompletionStage<Result> createSSUUser(Http.Request httpRequest) {
+      System.out.println("*****DIKSHA**** UserController "+httpRequest.toString());
       CompletionStage<Result> userResponse = handleRequest(
         ssuUserCreateActor,
         ActorOperations.CREATE_SSU_USER.getValue(),
         httpRequest.body().asJson(),
         req -> {
           Request request = (Request) req;
+            System.out.println("*****DIKSHA**** UserController Request "+request);
           new UserRequestValidator().validateUserCreateV3(request);
           return null;
         },
@@ -126,19 +130,20 @@ public class UserController extends BaseController {
         true,
         httpRequest);
 
+      System.out.println("*****DIKSHA**** userResponse"+userResponse.toString());
       userResponse.thenAccept(x -> {
           if (x.status() == 200) {
               JSONObject json = new JSONObject(x.asScala().header().headers().get("jsonNode").get());
               String userId = json.getJSONObject("result").getString("userId");
-              System.out.println("UserId  == " + userId);
+              System.out.println("*****DIKSHA***** UserId  == " + userId);
               ObjectNode node = (ObjectNode) httpRequest.asScala().body().asJson();
               ObjectNode locationJson = node.with("request").with("location")
                       .put("userId", userId);
               JsonNode requestJson = node.set("request", locationJson);
-              System.out.println("************location json ****** = " + locationJson.toPrettyString());
-              System.out.println("************httpRequest json******* = " + requestJson.toPrettyString());
+              System.out.println("*****DIKSHA***** location json ****** = " + locationJson.toPrettyString());
+              System.out.println("*****DIKSHA***** httpRequest json******* = " + requestJson.toPrettyString());
               updateUserV4(httpRequest, requestJson);
-              System.out.println("update location data successfully for userId = " + userId);
+              System.out.println("*****DIKSHA***** update location data successfully for userId = " + userId);
           }
       });
 
