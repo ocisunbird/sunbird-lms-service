@@ -46,6 +46,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   public void validateCreateUserRequest(Request userRequest) {
+    logger.info("*****DIKSHA***** UserRequestValidator validateCreateUserRequest UserRequest"+userRequest.toString());
     externalIdsValidation(userRequest, JsonKey.CREATE);
     fieldsNotAllowed(
         Arrays.asList(
@@ -105,6 +106,10 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   public void validateUserCreateV3(Request userRequest) {
+    logger.info("*****DIKSHA***** UserRequestValidator validateUserCreateV3 UserRequest"+userRequest.toString());
+    logger.info("*****DIKSHA***** UserRequestValidator validateUserCreateV3 email "+userRequest.getRequest().get(JsonKey.EMAIL));
+    logger.info("*****DIKSHA***** UserRequestValidator validateUserCreateV3 phone "+userRequest.getRequest().get(JsonKey.PHONE));
+    logger.info("*****DIKSHA***** UserRequestValidator validateUserCreateV3 Managed By "+userRequest.getRequest().get(JsonKey.MANAGED_BY));
     validateParam(
         (String) userRequest.getRequest().get(JsonKey.FIRST_NAME),
         ResponseCode.mandatoryParamsMissing,
@@ -125,6 +130,7 @@ public class UserRequestValidator extends BaseRequestValidator {
       ProjectCommonException.throwClientErrorException(
           ResponseCode.OnlyEmailorPhoneorManagedByRequired);
     }
+    logger.info("*****DIKSHA***** UserRequestValidator validateUserCreateV3 userRequest"+userRequest.toString());
     validatePassword((String) userRequest.getRequest().get(JsonKey.PASSWORD));
     if (StringUtils.isNotBlank((String) userRequest.getRequest().get(JsonKey.EMAIL))) {
       validateEmail((String) userRequest.getRequest().get(JsonKey.EMAIL));
@@ -206,7 +212,7 @@ public class UserRequestValidator extends BaseRequestValidator {
    * @param userRequest
    */
   public void createUserBasicValidation(Request userRequest) {
-
+    logger.info("*****DIKSHA***** UserRequestValidator createUserBasicValidation "+userRequest.toString());
     createUserBasicProfileFieldsValidation(userRequest);
     if (userRequest.getRequest().containsKey(JsonKey.ROLES)
         && null != userRequest.getRequest().get(JsonKey.ROLES)
@@ -220,6 +226,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void createUserBasicProfileFieldsValidation(Request userRequest) {
+    logger.info("*****DIKSHA***** UserRequestValidator createUserBasicProfileFieldsValidation "+userRequest.toString());
     validateParam(
         (String) userRequest.getRequest().get(JsonKey.FIRST_NAME),
         ResponseCode.mandatoryParamsMissing,
@@ -292,6 +299,7 @@ public class UserRequestValidator extends BaseRequestValidator {
    * @param userRequest Request
    */
   public void validateUpdateUserRequest(Request userRequest) {
+    logger.info("*****DIKSHA***** UserRequestValidator validateUpdateUserRequest "+userRequest.toString());
     if (userRequest.getRequest().containsKey(JsonKey.MANAGED_BY)) {
       ProjectCommonException.throwClientErrorException(ResponseCode.managedByNotAllowed);
     }
@@ -303,7 +311,7 @@ public class UserRequestValidator extends BaseRequestValidator {
     boolean userDeleteCalled = false;
     Object object = userRequest.getRequest().get("userDeleteCalled");
     if(object!=null) {
-      logger.info("UserDeleted Flga status "+object.toString());
+      logger.info("UserDeleted Flag status "+object.toString());
       userDeleteCalled = (boolean)object;
     }
     userRequest.setUserDeleteCalled(userDeleteCalled);
@@ -361,6 +369,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   public void externalIdsValidation(Request userRequest, String operation) {
+    logger.info("*****DIKSHA***** UserRequestValidator externalIdsValidation "+userRequest.toString()+ " operation "+operation);
     if (userRequest.getRequest().containsKey(JsonKey.EXTERNAL_IDS)
         && (null != userRequest.getRequest().get(JsonKey.EXTERNAL_IDS))) {
       if (!(userRequest.getRequest().get(JsonKey.EXTERNAL_IDS) instanceof List)) {
@@ -381,6 +390,7 @@ public class UserRequestValidator extends BaseRequestValidator {
 
   private void validateIndividualExternalId(
       String operation, List<Map<String, String>> externalIds) {
+    logger.info("*****DIKSHA***** UserRequestValidator validateIndividualExternalId operation "+operation+" externalIds"+externalIds.get(0));
     // valid operation type for externalIds in user api.
     List<String> operationTypeList = Arrays.asList(JsonKey.ADD, JsonKey.REMOVE, JsonKey.EDIT);
     externalIds
@@ -422,6 +432,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void validateExternalIdMandatoryParam(String param, String paramValue) {
+    logger.info("*****DIKSHA***** UserRequestValidator validateExternalIdMandatoryParam "+param+" param Value "+paramValue);
     if (StringUtils.isBlank(paramValue)) {
       throw new ProjectCommonException(
           ResponseCode.mandatoryParamsMissing,
@@ -629,6 +640,7 @@ public class UserRequestValidator extends BaseRequestValidator {
   }
 
   private void checkForDuplicateExternalId(List<Map<String, String>> list) {
+    logger.info("*****DIKSHA***** UserRequestValidator checkForDuplicateExternalId "+list.get(0));
     List<Map<String, String>> checkedList = new ArrayList<>();
     for (Map<String, String> externalId : list) {
       for (Map<String, String> checkedExternalId : checkedList) {
@@ -649,6 +661,7 @@ public class UserRequestValidator extends BaseRequestValidator {
 
   @SuppressWarnings("unchecked")
   private void validateFrameworkDetails(Request request) {
+    logger.info("*****DIKSHA***** UserRequestValidator validateFrameworkDetails "+request.toString());
     if (request.getRequest().containsKey(JsonKey.FRAMEWORK)
         && (!(request.getRequest().get(JsonKey.FRAMEWORK) instanceof Map))) {
       throw new ProjectCommonException(

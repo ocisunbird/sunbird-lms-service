@@ -40,6 +40,7 @@ public class BaseRequestValidator {
    * @param errorMsgArgument Argument for error message.
    */
   public void validateParam(String value, ResponseCode error, String errorMsgArgument) {
+    System.out.println("*****DIKSHA***** UserRequestValidator"+ value+" Error "+error+" errorMsgArgument "+errorMsgArgument);
     if (StringUtils.isBlank(value)) {
       throw new ProjectCommonException(
           error,

@@ -71,6 +71,7 @@ public class SSOUserCreateActor extends UserBaseActor {
    * @param actorMessage Request
    */
   private void createSSOUser(Request actorMessage) {
+    logger.info("*****DIKSHA***** SSOUserCreateActor createSSOUser Request"+actorMessage.toString());
     logger.debug(actorMessage.getRequestContext(), "SSOUserCreateActor:createSSOUser: starts : ");
     actorMessage.toLower();
     Map<String, Object> userMap = actorMessage.getRequest();
@@ -86,6 +87,7 @@ public class SSOUserCreateActor extends UserBaseActor {
     validateAndGetLocationCodes(actorMessage);
     convertValidatedLocationCodesToIDs(userMap, actorMessage.getRequestContext());
     ssoUserService.validateOrgIdAndPrimaryRecoveryKeys(userMap, actorMessage);
+    logger.info("*****DIKSHA***** SSOUserCreateActor createSSOUser userMap "+userMap.get(JsonKey.ID));
     processSSOUser(userMap, callerId, actorMessage);
     logger.debug(actorMessage.getRequestContext(), "SSOUserCreateActor:createSSOUser: ends : ");
   }
@@ -107,6 +109,7 @@ public class SSOUserCreateActor extends UserBaseActor {
     requestMap = UserUtil.encryptUserData(userMap);
     // removing roles from requestMap, so it won't get save in user table
     List<String> roles = (List<String>) requestMap.get(JsonKey.ROLES);
+    logger.info("*****DIKSHA***** SSOUserCreateActor processSSOUser roles"+roles);
     removeUnwanted(requestMap);
     requestMap.put(JsonKey.IS_DELETED, false);
     Map<String, Boolean> userFlagsMap = new HashMap<>();
@@ -115,6 +118,7 @@ public class SSOUserCreateActor extends UserBaseActor {
     int userFlagValue = userFlagsToNum(userFlagsMap);
     requestMap.put(JsonKey.FLAGS_VALUE, userFlagValue);
     Response response = ssoUserService.createUserAndPassword(requestMap, userMap, request);
+    logger.info("*****DIKSHA***** SSOUserCreateActor processSSOUser create user response"+response.toString());
     // update roles to user_roles
     if (CollectionUtils.isNotEmpty(roles)) {
       requestMap.put(JsonKey.ROLES, roles);

@@ -18,7 +18,8 @@ public class UserConsentController extends BaseController {
   private ActorRef userConsentActor;
 
   public CompletionStage<Result> updateUserConsent(Http.Request httpRequest) {
-    return handleRequest(
+      System.out.println("*****DIKSHA***** UserConsentController updateUserConsent "+httpRequest.toString());
+      return handleRequest(
         userConsentActor,
         ActorOperations.UPDATE_USER_CONSENT.getValue(),
         httpRequest.body().asJson(),
@@ -34,6 +35,7 @@ public class UserConsentController extends BaseController {
   }
 
   public CompletionStage<Result> getUserConsent(Http.Request httpRequest) {
+      System.out.println("*****DIKSHA***** UserConsentController getUserConsent "+httpRequest.toString());
     return handleRequest(
         userConsentActor,
         ActorOperations.GET_USER_CONSENT.getValue(),

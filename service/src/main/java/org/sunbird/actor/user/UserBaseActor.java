@@ -119,6 +119,7 @@ public abstract class UserBaseActor extends BaseActor {
   }
 
   protected void validateAndGetLocationCodes(Request userRequest) {
+    logger.info("*****DIKSHA***** validateAndGetLocationCodes " +userRequest);
     Object locationCodes = userRequest.getRequest().get(JsonKey.LOCATION_CODES);
     UserCreateRequestValidator.validateLocationCodesDataType(locationCodes);
     if (CollectionUtils.isNotEmpty((List) locationCodes)) {
@@ -171,6 +172,7 @@ public abstract class UserBaseActor extends BaseActor {
   }
 
   protected List<Location> getLocationList(Object locationCodes, RequestContext context) {
+    logger.info("*****DIKSHA***** locationCodes "+locationCodes+ " RequestContext "+context);
     // As of now locationCode can take array of only location codes and map of location Codes which
     // include type and code of the location
     List<Location> locationList = new ArrayList<>();
@@ -181,6 +183,7 @@ public abstract class UserBaseActor extends BaseActor {
       filters.put(JsonKey.CODE, locations);
       searchRequestMap.put(JsonKey.FILTERS, filters);
       Response searchResponse = locationService.searchLocation(searchRequestMap, context);
+      logger.info("*****DIKSHA***** locationService " +searchResponse);
       List<Map<String, Object>> responseList =
           (List<Map<String, Object>>) searchResponse.getResult().get(JsonKey.RESPONSE);
       locationList =
@@ -189,10 +192,11 @@ public abstract class UserBaseActor extends BaseActor {
               .map(s -> mapper.convertValue(s, Location.class))
               .collect(Collectors.toList());
     }
-
+    logger.info("*****DIKSHA***** locationCodes "+locationCodes.toString());
     if (((List) locationCodes).get(0) instanceof Map) {
       locationList = createLocationLists((List<Map<String, String>>) locationCodes);
     }
+    logger.info("*****DIKSHA***** locationList " +locationList.toString());
     return locationList;
   }
 
@@ -241,6 +245,7 @@ public abstract class UserBaseActor extends BaseActor {
 
   protected void populateProfileUserType(
       Map<String, Object> userMap, RequestContext requestContext) {
+    logger.info("*****DIKSHA***** "+userMap+" RequestContext "+requestContext);
     Map<String, String> userTypeAndSubType = new HashMap<>();
     userMap.remove(JsonKey.PROFILE_USERTYPE);
     if (userMap.containsKey(JsonKey.USER_TYPE)) {

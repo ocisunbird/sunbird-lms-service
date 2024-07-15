@@ -18,6 +18,7 @@ public class UserTnCController extends BaseController {
   private ActorRef userTnCActor;
 
   public CompletionStage<Result> acceptTnC(Http.Request httpRequest) {
+      System.out.println("*****DIKSHA***** UserTnCController acceptTnC "+httpRequest.toString());
     return handleRequest(
         userTnCActor,
         ActorOperations.USER_TNC_ACCEPT.getValue(),
