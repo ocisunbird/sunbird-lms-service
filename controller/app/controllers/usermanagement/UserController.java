@@ -61,7 +61,7 @@ public class UserController extends BaseController {
   private ActorRef userSelfDeclarationManagementActor;
 
   public CompletionStage<Result> createUser(Http.Request httpRequest) {
-      System.out.println("*****DIKSHA**** UserController "+httpRequest.toString());
+      System.out.println("*****DIKSHA***** UserController createUser "+httpRequest.toString());
     return handleRequest(
         ssoUserCreateActor,
         ActorOperations.CREATE_USER.getValue(),
@@ -79,6 +79,7 @@ public class UserController extends BaseController {
   }
 
   public CompletionStage<Result> createSSOUser(Http.Request httpRequest) {
+      System.out.println("*****DIKSHA***** USerController createSSOUse "+httpRequest.toString());
     return handleRequest(
         ssoUserCreateActor,
         ActorOperations.CREATE_SSO_USER.getValue(),
@@ -96,7 +97,7 @@ public class UserController extends BaseController {
   }
 
   public CompletionStage<Result> createUserV3(Http.Request httpRequest) {
-      System.out.println("*****DIKSHA**** UserController "+httpRequest.toString());
+      System.out.println("*****DIKSHA***** UserController "+httpRequest.toString());
     return handleRequest(
         ssuUserCreateActor,
         ActorOperations.CREATE_USER_V3.getValue(),
@@ -114,14 +115,14 @@ public class UserController extends BaseController {
   }
 
   public CompletionStage<Result> createSSUUser(Http.Request httpRequest) {
-      System.out.println("*****DIKSHA**** UserController "+httpRequest.toString());
+      System.out.println("*****DIKSHA***** UserController createSSUUser "+httpRequest.toString());
       CompletionStage<Result> userResponse = handleRequest(
         ssuUserCreateActor,
         ActorOperations.CREATE_SSU_USER.getValue(),
         httpRequest.body().asJson(),
         req -> {
           Request request = (Request) req;
-            System.out.println("*****DIKSHA**** UserController Request "+request);
+            System.out.println("*****DIKSHA***** UserController createSSUUser Request "+request);
           new UserRequestValidator().validateUserCreateV3(request);
           return null;
         },
@@ -130,20 +131,20 @@ public class UserController extends BaseController {
         true,
         httpRequest);
 
-      System.out.println("*****DIKSHA**** userResponse"+userResponse.toString());
+      System.out.println("*****DIKSHA***** UserController createSSUUser userResponse"+userResponse.toString());
       userResponse.thenAccept(x -> {
           if (x.status() == 200) {
               JSONObject json = new JSONObject(x.asScala().header().headers().get("jsonNode").get());
               String userId = json.getJSONObject("result").getString("userId");
-              System.out.println("*****DIKSHA***** UserId  == " + userId);
+              System.out.println("*****DIKSHA***** UserController createSSUUser UserId  == " + userId);
               ObjectNode node = (ObjectNode) httpRequest.asScala().body().asJson();
               ObjectNode locationJson = node.with("request").with("location")
                       .put("userId", userId);
               JsonNode requestJson = node.set("request", locationJson);
-              System.out.println("*****DIKSHA***** location json ****** = " + locationJson.toPrettyString());
-              System.out.println("*****DIKSHA***** httpRequest json******* = " + requestJson.toPrettyString());
+              System.out.println("*****DIKSHA***** UserController createSSUUser location json ****** = " + locationJson.toPrettyString());
+              System.out.println("*****DIKSHA***** UserController createSSUUser httpRequest json******* = " + requestJson.toPrettyString());
               updateUserV4(httpRequest, requestJson);
-              System.out.println("*****DIKSHA***** update location data successfully for userId = " + userId);
+              System.out.println("*****DIKSHA***** UserController createSSUUser update location data successfully for userId = " + userId);
           }
       });
 
@@ -151,7 +152,8 @@ public class UserController extends BaseController {
   }
 
   public CompletionStage<Result> createUserV4(Http.Request httpRequest) {
-    return handleRequest(
+      System.out.println("*****DIKSHA***** USerController createUserV4 "+httpRequest.toString());
+      return handleRequest(
         managedUserActor,
         ActorOperations.CREATE_USER_V4.getValue(),
         httpRequest.body().asJson(),
@@ -168,6 +170,7 @@ public class UserController extends BaseController {
   }
 
   public CompletionStage<Result> createManagedUser(Http.Request httpRequest) {
+      System.out.println("*****DIKSHA***** UserController createManagedUser "+httpRequest.toString());
     return handleRequest(
         managedUserActor,
         ActorOperations.CREATE_MANAGED_USER.getValue(),
@@ -231,6 +234,8 @@ public class UserController extends BaseController {
         httpRequest);
   }
   public CompletionStage<Result> updateUserV4(Http.Request httpRequest, JsonNode requestJson) {
+      System.out.println("*****DIKSHA***** UserController updateUserV4 "+httpRequest.toString()+"requestJson "+requestJson.toString());
+
       return handleRequest(
          userUpdateActor,
          ActorOperations.UPDATE_USER_V3.getValue(),

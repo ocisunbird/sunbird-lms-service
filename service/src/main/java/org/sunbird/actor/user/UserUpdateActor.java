@@ -72,6 +72,7 @@ public class UserUpdateActor extends UserBaseActor {
 
   @Override
   public void onReceive(Request request) throws Throwable {
+    logger.info("*****DIKSHA***** UserUpdateActor onReceive "+request.toString());
     Util.initializeContext(request, TelemetryEnvKey.USER);
     String operation = request.getOperation();
     switch (operation) {
@@ -89,7 +90,7 @@ public class UserUpdateActor extends UserBaseActor {
     actorMessage.toLower();
     String callerId = (String) actorMessage.getContext().get(JsonKey.CALLER_ID);
     Map<String, Object> userMap = actorMessage.getRequest();
-    logger.info(actorMessage.getRequestContext(), "Incoming update request body: " + userMap);
+    logger.info(actorMessage.getRequestContext(), "*****DIKSHA***** Incoming update request body: " + userMap);
     userRequestValidator.validateUpdateUserRequest(actorMessage);
     if (null != actorMessage.getRequest().get(JsonKey.PROFILE_DETAILS)) {
       userProfileService.validateProfile(actorMessage);

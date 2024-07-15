@@ -40,6 +40,7 @@ public class LocationController extends BaseController {
    * @return Return a promise for create location API result
    */
   public CompletionStage<Result> createLocation(Http.Request httpRequest) {
+    System.out.println("*****DIKSHA***** LocationController createLocation "+httpRequest.toString());
     Request request = new Request();
     try {
       JsonNode jsonNode = httpRequest.body().asJson();
@@ -47,6 +48,7 @@ public class LocationController extends BaseController {
           createAndInitRequest(ActorOperations.CREATE_LOCATION.getValue(), jsonNode, httpRequest);
       setContextAndPrintEntryLog(httpRequest, request);
       validator.validateCreateLocationRequest(request);
+      System.out.println("*****DIKSHA***** LocationController createLocation request"+request.toString());
       return actorResponseHandler(locationActor, request, timeout, null, httpRequest);
     } catch (Exception e) {
       ProjectCommonException exception =
@@ -70,6 +72,7 @@ public class LocationController extends BaseController {
    * @return Return a promise for update location API result
    */
   public CompletionStage<Result> updateLocation(Http.Request httpRequest) {
+    System.out.println("*****DIKSHA***** LocationController updateLocation "+httpRequest.toString());
     Request request = new Request();
     try {
       JsonNode jsonNode = httpRequest.body().asJson();
@@ -77,6 +80,7 @@ public class LocationController extends BaseController {
           createAndInitRequest(ActorOperations.UPDATE_LOCATION.getValue(), jsonNode, httpRequest);
       setContextAndPrintEntryLog(httpRequest, request);
       validator.validateUpdateLocationRequest(request);
+      System.out.println("*****DIKSHA***** LocationController updateLocation request"+request.toString());
       return actorResponseHandler(locationActor, request, timeout, null, httpRequest);
     } catch (Exception e) {
       ProjectCommonException exception =
@@ -126,6 +130,7 @@ public class LocationController extends BaseController {
    * @return Return a promise for update location API result.
    */
   public CompletionStage<Result> searchLocation(Http.Request httpRequest) {
+    System.out.println("*****DIKSHA***** LocationController searchLocation "+httpRequest.toString());
     Request request = new Request();
     try {
       JsonNode jsonNode = httpRequest.body().asJson();
@@ -133,6 +138,7 @@ public class LocationController extends BaseController {
           createAndInitRequest(ActorOperations.SEARCH_LOCATION.getValue(), jsonNode, httpRequest);
       setContextAndPrintEntryLog(httpRequest, request);
       validator.validateSearchLocationRequest(request);
+      System.out.println("*****DIKSHA***** LocationController searchLocation request"+request.toString());
       return actorResponseHandler(locationActor, request, timeout, null, httpRequest);
     } catch (Exception e) {
       ProjectCommonException exception =

@@ -102,7 +102,7 @@ public class BaseController extends Controller {
    */
   protected org.sunbird.request.Request createAndInitRequest(
       String operation, JsonNode requestBodyJson, Request httpRequest) {
-    logger.info("*****DIKSHA**** opration "+operation+" requestBodyJson "+requestBodyJson.toString()+" httpRequest "+httpRequest.toString());
+    logger.info("*****DIKSHA***** BaseController createAndInitRequest operation "+operation+" requestBodyJson "+requestBodyJson.toString()+" httpRequest "+httpRequest.toString());
     org.sunbird.request.Request request =
         (org.sunbird.request.Request)
             mapper.RequestMapper.mapRequest(requestBodyJson, org.sunbird.request.Request.class);
@@ -265,7 +265,7 @@ public class BaseController extends Controller {
       if (headers != null) request.getContext().put(JsonKey.HEADER, headers);
       setContextAndPrintEntryLog(httpRequest, request);
       if (requestValidatorFn != null) requestValidatorFn.apply(request);
-      logger.info("*****DIKSHA**** BaseController Request "+request.toString());
+      logger.info("*****DIKSHA***** BaseController handleRequest Request "+request.toString());
       return actorResponseHandler(actorRef, request, timeout, null, httpRequest);
     } catch (Exception e) {
       logger.error(
@@ -689,7 +689,7 @@ public class BaseController extends Controller {
       Timeout timeout,
       String responseKey,
       Request httpReq) {
-    logger.info("*****DIKSHA**** BaseController ActorRef"+actorRef+" request "+request.toString()+" responsekey "+responseKey+" Request "+httpReq);
+    logger.info("*****DIKSHA***** BaseController actorResponseHandler ActorRef"+actorRef+" request "+request.toString()+" responsekey "+responseKey+" Request "+httpReq);
     Function<Object, Result> function =
         result -> {
           if (ActorOperations.HEALTH_CHECK.getValue().equals(request.getOperation())) {
@@ -701,7 +701,7 @@ public class BaseController extends Controller {
                 == (response.getResponseCode().getResponseCode())) {
               Result reslt = createCommonResponse(response, responseKey, httpReq);
               printExitLogOnSuccessResponse(request, response);
-              logger.info("*****DIKSHA**** Result inside "+result);
+              logger.info("*****DIKSHA***** BaseController actorResponseHandler Result inside "+result);
               return reslt;
             } else if (ResponseCode.CLIENT_ERROR.getResponseCode()
                 == (response.getResponseCode().getResponseCode())) {
@@ -744,7 +744,7 @@ public class BaseController extends Controller {
           }
         };
 
-    logger.info("*****DIKSHA**** request for Actor call "+request);
+    logger.info("*****DIKSHA***** BaseController actorResponseHandler request for Actor call "+request);
     if (actorRef instanceof ActorRef) {
       return PatternsCS.ask((ActorRef) actorRef, request, timeout).thenApplyAsync(function);
     } else {

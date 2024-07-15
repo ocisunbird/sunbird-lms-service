@@ -38,6 +38,7 @@ public class ManagedUserActor extends UserBaseActor {
 
   @Override
   public void onReceive(Request request) throws Throwable {
+    logger.info("*****DIKSHA***** ManagedUserActor onReceive "+request.toString());
     Util.initializeContext(request, TelemetryEnvKey.USER);
     String operation = request.getOperation();
     switch (operation) {
@@ -72,7 +73,7 @@ public class ManagedUserActor extends UserBaseActor {
     String managedBy = (String) userMap.get(JsonKey.MANAGED_BY);
     logger.info(
         actorMessage.getRequestContext(),
-        "validateUserId :: requestedId: " + actorMessage.getContext().get(JsonKey.REQUESTED_BY));
+        "*****DIKSHA***** validateUserId :: requestedId: " + actorMessage.getContext().get(JsonKey.REQUESTED_BY));
     String userId = (String) actorMessage.getContext().get(JsonKey.REQUESTED_BY);
     userMap.put(JsonKey.CREATED_BY, userId);
     // If user account isManagedUser (managedBy passed in request) should be same as context
@@ -133,6 +134,7 @@ public class ManagedUserActor extends UserBaseActor {
     userMap.remove(JsonKey.PASSWORD);
     userMap.remove(JsonKey.DOB_VALIDATION_DONE);
     Response response = userService.createUser(userMap, actorMessage.getRequestContext());
+    logger.info("*****DIKSHA***** ManagedUserActor processUserRequestV4 "+response.toString());
     userLookupService.insertRecords(userMap, actorMessage.getRequestContext());
     response.put(JsonKey.USER_ID, userMap.get(JsonKey.ID));
     Map<String, Object> esResponse = new HashMap<>();
