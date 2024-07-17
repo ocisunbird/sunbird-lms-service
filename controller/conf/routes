@@ -135,5 +135,5 @@ POST    /v1/system/settings/set                 @controllers.systemsettings.Syst
 
 #Chat With Books API
 POST    /chatWithBooks/v1/save                  @controllers.chatwithbooks.ChatWithBooksController.saveChatBookData(request: play.mvc.Http.Request)
-POST    /chatWithBooks/v1/read/:uid             @controllers.chatwithbooks.ChatWithBooksController.readChatBookData(uid:String, request: play.mvc.Http.Request)
+GET    /chatWithBooks/v1/read/:uid             @controllers.chatwithbooks.ChatWithBooksController.readChatBookData(uid:String, request: play.mvc.Http.Request)
 
