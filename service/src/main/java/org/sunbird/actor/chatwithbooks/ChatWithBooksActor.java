@@ -56,6 +56,8 @@ public class ChatWithBooksActor extends BaseActor {
     }
 
     private void chatWithBooksRead(Request actorMessage) {
-
+        Response response = chatWithBooksService.chatWithBooksRead(actorMessage);
+        logger.info("195124 Response Read : "+response.toString());
+        sender().tell(response, self());
     }
 }

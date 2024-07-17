@@ -5,6 +5,7 @@ import controllers.BaseController;
 import org.sunbird.keys.JsonKey;
 import org.sunbird.operations.ActorOperations;
 import org.sunbird.request.Request;
+import org.sunbird.util.ProjectUtil;
 import play.mvc.Http;
 import play.mvc.Result;
 
@@ -33,5 +34,39 @@ public class ChatWithBooksController extends BaseController {
                 true,
                 httpRequest
         );
+    }
+
+    public CompletionStage<Result> readChatBookData(String userId, Http.Request httpRequest) {
+        return handleReadChatBookData(
+                ActorOperations.CHAT_WITH_BOOKS_READ.getValue(),
+                ProjectUtil.getLmsUserId(userId),
+                httpRequest);
+    }
+
+    private CompletionStage<Result> handleReadChatBookData(
+            String operation, String userId, Http.Request httpRequest) {
+        final boolean isPrivate = httpRequest.path().contains(JsonKey.PRIVATE) ? true : false;
+        final String requestedFields = httpRequest.getQueryString(JsonKey.FIELDS);
+        final String provider = httpRequest.getQueryString(JsonKey.PROVIDER);
+        final String idType = httpRequest.getQueryString(JsonKey.ID_TYPE);
+        final String withTokens = httpRequest.getQueryString(JsonKey.WITH_TOKENS);
+        return handleRequest(
+                chatWithBooksActor,
+                operation,
+                null,
+                req -> {
+                    Request request = (Request) req;
+                    request.getContext().put(JsonKey.FIELDS, requestedFields);
+                    request.getContext().put(JsonKey.PRIVATE, isPrivate);
+                    request.getContext().put(JsonKey.WITH_TOKENS, withTokens);
+                    request.getContext().put(JsonKey.PROVIDER, provider);
+                    request.getContext().put(JsonKey.ID_TYPE, idType);
+                    request.getContext().put(JsonKey.VERSION, JsonKey.VERSION_1);
+                    return null;
+                },
+                userId,
+                JsonKey.USER_ID,
+                false,
+                httpRequest);
     }
 }

@@ -1,5 +1,6 @@
 package org.sunbird.dao.chatwithbooks;
 
+import org.sunbird.request.Request;
 import org.sunbird.request.RequestContext;
 import org.sunbird.response.Response;
 
@@ -16,4 +17,6 @@ public interface ChatWithBooksDao {
      * @return User ID.
      */
     Response chatWithBooksSave(Map<String, Object> bookSaveData, RequestContext context);
+
+    Response chatWithBooksRead(Request actorMessage);
 }
