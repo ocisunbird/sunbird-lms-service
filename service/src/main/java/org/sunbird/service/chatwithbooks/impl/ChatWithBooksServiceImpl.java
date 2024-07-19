@@ -35,18 +35,28 @@ public class ChatWithBooksServiceImpl implements ChatWithBooksService {
 
     @Override
     public List<ChatReadData> readChatWithBookRecords(String userId, RequestContext context) {
-        List<ChatReadData> chatReadDataList = new ArrayList<>();
-        Response response = chatWithBooksDao.chatWithBooksRead(userId,context);
-        logger.info("ChatWithBooksServiceImpl response : "+response.toString());
-        if (null != response) {
-            List<Map<String, Object>> readResults =
-                    (List<Map<String, Object>>) response.getResult().get(JsonKey.READ_BOOK_DATA);
-            if (CollectionUtils.isNotEmpty(readResults)) {
-                for (Map<String, Object> readData : readResults) {
-                    chatReadDataList.add(mapper.convertValue(readData, ChatReadData.class));
+        try {
+            List<ChatReadData> chatReadDataList = new ArrayList<>();
+            Response response = chatWithBooksDao.chatWithBooksRead(userId, context);
+            logger.info("ChatWithBooksServiceImpl response String  : " + response.toString());
+            logger.info("ChatWithBooksServiceImpl response ID : " + response.getId());
+            logger.info("ChatWithBooksServiceImpl response Result : " + response.getResult().toString());
+            logger.info("ChatWithBooksServiceImpl response TS : " + response.getTs());
+            logger.info("ChatWithBooksServiceImpl response Version : " + response.getVer());
+            logger.info("ChatWithBooksServiceImpl response Code : " + response.getResponseCode());
+            if (null != response) {
+                List<Map<String, Object>> readResults =
+                        (List<Map<String, Object>>) response.getResult().get(JsonKey.READ_BOOK_DATA);
+                if (CollectionUtils.isNotEmpty(readResults)) {
+                    for (Map<String, Object> readData : readResults) {
+                        chatReadDataList.add(mapper.convertValue(readData, ChatReadData.class));
+                    }
                 }
             }
+            return chatReadDataList;
+        } catch (Exception e) {
+            logger.error("Error : ", e);
+            return null;
         }
-        return chatReadDataList;
     }
 }
