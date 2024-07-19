@@ -30,6 +30,7 @@ public class ChatWithBooksActor extends BaseActor {
         logger.info("Operation ChatWithBooksActor : "+operation);
         logger.info("Request ChatWithBooksActor : "+request);
         RequestContext context = request.getRequestContext();
+        logger.info("ChatWithBooksActor UserId : "+(String) request.getRequest().get(JsonKey.USER_ID));
         switch (operation) {
             case "chatWithBooksSave":
                 chatWithBooksSave(request);
@@ -64,6 +65,7 @@ public class ChatWithBooksActor extends BaseActor {
 
         Map<String, Object> reqMap = new WeakHashMap<>(2);
         reqMap.put(JsonKey.USER_ID, userId);
+        logger.info("ChatWithBooksActor chatWithBooksRead userId :"+userId);
         List<ChatReadData> readList = chatWithBooksService.readChatWithBookRecords(userId, context);
         logger.info("ChatWithBooksActor readList : "+readList);
         Map<String, Object> result = new HashMap<>();

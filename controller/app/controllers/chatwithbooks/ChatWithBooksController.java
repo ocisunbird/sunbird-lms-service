@@ -37,9 +37,10 @@ public class ChatWithBooksController extends BaseController {
     }
 
     public CompletionStage<Result> readChatBookData(String userId, Http.Request httpRequest) {
+        System.out.println("ChatWithBooksController UserID : "+userId+" Request : "+httpRequest.toString());
         return handleReadChatBookData(
                 ActorOperations.CHAT_WITH_BOOKS_READ.getValue(),
-                ProjectUtil.getLmsUserId(userId),
+                userId,
                 httpRequest);
     }
 
@@ -50,6 +51,7 @@ public class ChatWithBooksController extends BaseController {
         final String provider = httpRequest.getQueryString(JsonKey.PROVIDER);
         final String idType = httpRequest.getQueryString(JsonKey.ID_TYPE);
         final String withTokens = httpRequest.getQueryString(JsonKey.WITH_TOKENS);
+        System.out.println("ChatWithBooksController UserID : "+userId);
         return handleRequest(
                 chatWithBooksActor,
                 operation,

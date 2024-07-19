@@ -34,6 +34,7 @@ public class ChatWithBooksDaoImpl implements ChatWithBooksDao {
 
     @Override
     public Response chatWithBooksRead(String userId, RequestContext context) {
+        logger.info("ChatWithBooksDaoImpl chatWithBooksRead userId :"+userId);
         Response propertiesValueById = cassandraOperation.getPropertiesValueById(KEY_SPACE_NAME, TABLE_NAME, userId, RESPONSE_COLUMN, context);
         logger.info("propertiesValueById "+propertiesValueById.toString());
         logger.info("params "+propertiesValueById.getParams().toString());
