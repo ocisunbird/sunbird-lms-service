@@ -61,7 +61,7 @@ public class ChatWithBooksActor extends BaseActor {
         }
     }
 
-    private void chatWithBooksRead(String userId, RequestContext context) {
+    private void chatWithBooksRead1(String userId, RequestContext context) {
 
         Map<String, Object> reqMap = new WeakHashMap<>(2);
         reqMap.put(JsonKey.USER_ID, userId);
@@ -72,6 +72,11 @@ public class ChatWithBooksActor extends BaseActor {
         result.put(JsonKey.READ_BOOK_DATA, readList);
         Response response = new Response();
         response.put(JsonKey.RESPONSE, result);
+        sender().tell(response, self());
+    }
+    private void chatWithBooksRead(String userId, RequestContext context) {
+        Response response = chatWithBooksService.readChatWithBookRecordsNew(userId, context);
+        logger.info("195124 ChatWithBooksActor chatWithBooksRead Response : "+response);
         sender().tell(response, self());
     }
 }

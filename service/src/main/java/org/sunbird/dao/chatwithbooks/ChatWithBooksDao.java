@@ -26,4 +26,6 @@ public interface ChatWithBooksDao {
      * @return search details.
      */
     Response chatWithBooksRead(String userId, RequestContext context);
+
+    Map<String, Object> chatWithBooksReadNew(String userId, RequestContext context);
 }

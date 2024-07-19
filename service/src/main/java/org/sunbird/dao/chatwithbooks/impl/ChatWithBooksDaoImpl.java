@@ -1,5 +1,6 @@
 package org.sunbird.dao.chatwithbooks.impl;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.sunbird.cassandra.CassandraOperation;
 import org.sunbird.dao.chatwithbooks.ChatWithBooksDao;
 import org.sunbird.helper.ServiceFactory;
@@ -35,5 +36,17 @@ public class ChatWithBooksDaoImpl implements ChatWithBooksDao {
     @Override
     public Response chatWithBooksRead(String userId, RequestContext context) {
         return cassandraOperation.getPropertiesValueById(KEY_SPACE_NAME, TABLE_NAME, userId, RESPONSE_COLUMN, context);
+    }
+
+    @Override
+    public Map<String, Object> chatWithBooksReadNew(String userId, RequestContext context) {
+        Response response = cassandraOperation.getRecordById(KEY_SPACE_NAME, TABLE_NAME, userId,RESPONSE_COLUMN, context);
+        List<Map<String, Object>> responseList =
+                (List<Map<String, Object>>) response.get(JsonKey.RESPONSE);
+        logger.info("195124 ChatWithBooksDaoImpl chatWithBooksReadNew Response List : "+responseList);
+        if (CollectionUtils.isNotEmpty(responseList)) {
+            return responseList.get(0);
+        }
+        return null;
     }
 }
