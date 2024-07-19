@@ -248,6 +248,7 @@ public final class JsonKey {
   public static final String SUCCESS_RESULT = "successResult";
   public static final String SUNBIRD = "sunbird";
   public static final String CHAT_WITH_BOOKS ="chatwithbooks";
+  public static final String READ_BOOK_DATA ="searchResult";
   public static final String CHAT_WITH_BOOKS_SAVE_API ="api.chatWithBook.save";
   public static final String CHAT_WITH_BOOKS_SAVE_READ ="api.chatWithBook.read";
   public static final String SUNBIRD_ALLOWED_LOGIN = "sunbird_allowed_login";

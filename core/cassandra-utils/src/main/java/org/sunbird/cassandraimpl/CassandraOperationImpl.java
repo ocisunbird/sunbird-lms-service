@@ -273,6 +273,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
     String selectQuery = null;
     try {
       selectQuery = CassandraUtil.getSelectStatement(keyspaceName, tableName, properties);
+      logger.info("Select Query : "+selectQuery);
       PreparedStatement statement = connectionManager.getSession(keyspaceName).prepare(selectQuery);
       BoundStatement boundStatement = new BoundStatement(statement);
       ResultSet results =

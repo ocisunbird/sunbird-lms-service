@@ -16,6 +16,17 @@ public class ResponseParams implements Serializable {
   private String status;
   private String errmsg;
 
+  @Override
+  public String toString() {
+    return "ResponseParams{" +
+            "resmsgid='" + resmsgid + '\'' +
+            ", msgid='" + msgid + '\'' +
+            ", err='" + err + '\'' +
+            ", status='" + status + '\'' +
+            ", errmsg='" + errmsg + '\'' +
+            '}';
+  }
+
   public enum StatusType {
     SUCCESSFUL,
     WARNING,

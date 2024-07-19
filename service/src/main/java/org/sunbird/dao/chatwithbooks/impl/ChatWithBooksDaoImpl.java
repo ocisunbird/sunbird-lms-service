@@ -5,7 +5,6 @@ import org.sunbird.dao.chatwithbooks.ChatWithBooksDao;
 import org.sunbird.helper.ServiceFactory;
 import org.sunbird.keys.JsonKey;
 import org.sunbird.logging.LoggerUtil;
-import org.sunbird.request.Request;
 import org.sunbird.request.RequestContext;
 import org.sunbird.response.Response;
 
@@ -18,8 +17,7 @@ public class ChatWithBooksDaoImpl implements ChatWithBooksDao {
     private final LoggerUtil logger = new LoggerUtil(ChatWithBooksDaoImpl.class);
     private static final String TABLE_NAME = JsonKey.CHAT_WITH_BOOKS;
     private static final String KEY_SPACE_NAME = JsonKey.SUNBIRD;
-    private static final String PRIMARY_KEY= "userid";
-    private List<String> RESPONSE_COLUMN = Arrays.asList("savequery");
+    private List<String> RESPONSE_COLUMN = Arrays.asList("saveQuery","SearchQueryDate","userId");
     private final CassandraOperation cassandraOperation = ServiceFactory.getInstance();
     private static ChatWithBooksDao chatWithBooksDao = null;
     public static ChatWithBooksDao getInstance() {
@@ -35,7 +33,10 @@ public class ChatWithBooksDaoImpl implements ChatWithBooksDao {
     }
 
     @Override
-    public Response chatWithBooksRead(Request actorMessage) {
-        return cassandraOperation.getRecordById(KEY_SPACE_NAME, TABLE_NAME, PRIMARY_KEY, RESPONSE_COLUMN, actorMessage.getRequestContext());
+    public Response chatWithBooksRead(String userId, RequestContext context) {
+        Response propertiesValueById = cassandraOperation.getPropertiesValueById(KEY_SPACE_NAME, TABLE_NAME, userId, RESPONSE_COLUMN, context);
+        logger.info("propertiesValueById "+propertiesValueById.toString());
+        logger.info("params "+propertiesValueById.getParams().toString());
+        return propertiesValueById;
     }
 }

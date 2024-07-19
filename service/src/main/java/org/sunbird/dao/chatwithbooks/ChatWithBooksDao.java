@@ -1,6 +1,5 @@
 package org.sunbird.dao.chatwithbooks;
 
-import org.sunbird.request.Request;
 import org.sunbird.request.RequestContext;
 import org.sunbird.response.Response;
 
@@ -18,5 +17,13 @@ public interface ChatWithBooksDao {
      */
     Response chatWithBooksSave(Map<String, Object> bookSaveData, RequestContext context);
 
-    Response chatWithBooksRead(Request actorMessage);
+    /**
+     * This method will read the user input data from the database and return search results as success response or throw
+     * ProjectCommonException.
+     *
+     * @param userId
+     * @param context User Details.
+     * @return search details.
+     */
+    Response chatWithBooksRead(String userId, RequestContext context);
 }
