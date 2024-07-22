@@ -41,6 +41,7 @@ public class ChatWithBooksDaoImpl implements ChatWithBooksDao {
     @Override
     public Map<String, Object> chatWithBooksReadNew(String userId, RequestContext context) {
         Response response = cassandraOperation.getRecordById(KEY_SPACE_NAME, TABLE_NAME, userId,RESPONSE_COLUMN, context);
+        logger.info("195124 ChatWithBooksDaoImpl chatWithBooksReadNew Response : "+response.toString());
         List<Map<String, Object>> responseList =
                 (List<Map<String, Object>>) response.get(JsonKey.RESPONSE);
         logger.info("195124 ChatWithBooksDaoImpl chatWithBooksReadNew Response List : "+responseList);

@@ -20,6 +20,18 @@ public class Response implements Serializable, Cloneable {
   protected ResponseCode responseCode = ResponseCode.OK;
   protected Map<String, Object> result = new HashMap<>();
 
+  @Override
+  public String toString() {
+    return "Response{" +
+            "id='" + id + '\'' +
+            ", ver='" + ver + '\'' +
+            ", ts='" + ts + '\'' +
+            ", params=" + params +
+            ", responseCode=" + responseCode +
+            ", result=" + result +
+            '}';
+  }
+
   /**
    * This will provide request unique id.
    *

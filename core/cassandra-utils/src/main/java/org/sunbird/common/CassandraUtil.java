@@ -73,6 +73,7 @@ public final class CassandraUtil {
    * @return Response Response
    */
   public static Response createResponse(ResultSet results) {
+    logger.info("195124 CassandraUtil results "+results);
     Response response = new Response();
     List<Map<String, Object>> responseList = new ArrayList<>();
     Map<String, String> columnsMapping = fetchColumnsMapping(results);

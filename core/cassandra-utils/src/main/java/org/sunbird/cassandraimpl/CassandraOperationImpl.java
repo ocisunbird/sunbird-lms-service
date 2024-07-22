@@ -510,6 +510,7 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
         logger.info("195124 Row : "+row.toString());
       }
       response = CassandraUtil.createResponse(results);
+      logger.info("195124 response "+response.toString());
     } catch (Exception e) {
       logger.error(context, Constants.EXCEPTION_MSG_FETCH + tableName + " : " + e.getMessage(), e);
       throw new ProjectCommonException(
