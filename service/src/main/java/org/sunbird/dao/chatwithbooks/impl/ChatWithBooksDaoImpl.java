@@ -18,7 +18,7 @@ public class ChatWithBooksDaoImpl implements ChatWithBooksDao {
     private final LoggerUtil logger = new LoggerUtil(ChatWithBooksDaoImpl.class);
     private static final String TABLE_NAME = JsonKey.CHAT_WITH_BOOKS;
     private static final String KEY_SPACE_NAME = JsonKey.SUNBIRD;
-    private List<String> RESPONSE_COLUMN = Arrays.asList("saveQuery","SearchQueryDate","userId");
+    private List<String> RESPONSE_COLUMN = Arrays.asList("id","userId","saveQuery","searchQueryDate");
     private final CassandraOperation cassandraOperation = ServiceFactory.getInstance();
     private static ChatWithBooksDao chatWithBooksDao = null;
     public static ChatWithBooksDao getInstance() {

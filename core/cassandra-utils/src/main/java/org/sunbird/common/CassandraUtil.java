@@ -73,33 +73,24 @@ public final class CassandraUtil {
    * @return Response Response
    */
   public static Response createResponse(ResultSet results) {
-    logger.info("195124 CassandraUtil results "+results);
     Response response = new Response();
     List<Map<String, Object>> responseList = new ArrayList<>();
     Map<String, String> columnsMapping = fetchColumnsMapping(results);
-    logger.info("CassandraUtil columnsMapping "+columnsMapping);
-    for(String str : columnsMapping.keySet()){
-      logger.info("columnsMapping Column name  "+str);
-    }
-    for(String str : columnsMapping.values()){
-      logger.info("columnsMapping values  "+str);
-    }
     Iterator<Row> rowIterator = results.iterator();
-    logger.info("Results size = ================================  "+results.toString());
+    //logger.info("Results size = ================================  "+results.toString());
     rowIterator.forEachRemaining(
         row -> {
-          logger.info("row:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"+row.toString());
+          //logger.info("row:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"+row.toString());
           Map<String, Object> rowMap = new HashMap<>();
           columnsMapping
               .entrySet()
               .stream()
               .forEach(entry -> {
-                logger.info("Key::::::::::::::::::::::::::::::"+entry.getKey()+"::::::::::::Value:::::::::::::"+entry.getValue());
+                //logger.info("Key::::::::::::::::::::::::::::::"+entry.getKey()+"::::::::::::Value:::::::::::::"+entry.getValue());
                 rowMap.put(entry.getKey(), row.getObject(entry.getValue()));});
           responseList.add(rowMap);
         });
     response.put(Constants.RESPONSE, responseList);
-    logger.info("CassandraUtil Response "+response.toString());
     return response;
   }
 
