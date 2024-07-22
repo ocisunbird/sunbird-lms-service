@@ -85,6 +85,7 @@ public final class CassandraUtil {
       logger.info("columnsMapping values  "+str);
     }
     Iterator<Row> rowIterator = results.iterator();
+    logger.info("Results size = ================================  "+results.toString());
     rowIterator.forEachRemaining(
         row -> {
           logger.info("row:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"+row.toString());
