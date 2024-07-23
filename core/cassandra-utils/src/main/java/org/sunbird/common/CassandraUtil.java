@@ -77,16 +77,13 @@ public final class CassandraUtil {
     List<Map<String, Object>> responseList = new ArrayList<>();
     Map<String, String> columnsMapping = fetchColumnsMapping(results);
     Iterator<Row> rowIterator = results.iterator();
-    //logger.info("Results size = ================================  "+results.toString());
     rowIterator.forEachRemaining(
         row -> {
-          //logger.info("row:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"+row.toString());
           Map<String, Object> rowMap = new HashMap<>();
           columnsMapping
               .entrySet()
               .stream()
               .forEach(entry -> {
-                //logger.info("Key::::::::::::::::::::::::::::::"+entry.getKey()+"::::::::::::Value:::::::::::::"+entry.getValue());
                 rowMap.put(entry.getKey(), row.getObject(entry.getValue()));});
           responseList.add(rowMap);
         });

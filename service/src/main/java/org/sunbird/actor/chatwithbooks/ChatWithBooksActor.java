@@ -3,7 +3,6 @@ package org.sunbird.actor.chatwithbooks;
 import org.sunbird.actor.core.BaseActor;
 import org.sunbird.keys.JsonKey;
 import org.sunbird.logging.LoggerUtil;
-import org.sunbird.model.chatwithbooks.ChatReadData;
 import org.sunbird.request.Request;
 import org.sunbird.request.RequestContext;
 import org.sunbird.response.Response;
@@ -14,10 +13,7 @@ import org.sunbird.util.Util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 public class ChatWithBooksActor extends BaseActor {
 
@@ -28,9 +24,7 @@ public class ChatWithBooksActor extends BaseActor {
         Util.initializeContext(request, TelemetryEnvKey.USER);
         String operation = request.getOperation();
         logger.info("Operation ChatWithBooksActor : "+operation);
-        logger.info("Request ChatWithBooksActor : "+request);
         RequestContext context = request.getRequestContext();
-        logger.info("ChatWithBooksActor UserId : "+(String) request.getRequest().get(JsonKey.USER_ID));
         switch (operation) {
             case "chatWithBooksSave":
                 chatWithBooksSave(request);
@@ -61,22 +55,9 @@ public class ChatWithBooksActor extends BaseActor {
         }
     }
 
-    private void chatWithBooksRead1(String userId, RequestContext context) {
-
-        Map<String, Object> reqMap = new WeakHashMap<>(2);
-        reqMap.put(JsonKey.USER_ID, userId);
-        logger.info("ChatWithBooksActor chatWithBooksRead userId :"+userId);
-        List<ChatReadData> readList = chatWithBooksService.readChatWithBookRecords(userId, context);
-        logger.info("ChatWithBooksActor readList : "+readList);
-        Map<String, Object> result = new HashMap<>();
-        result.put(JsonKey.READ_BOOK_DATA, readList);
-        Response response = new Response();
-        response.put(JsonKey.RESPONSE, result);
-        sender().tell(response, self());
-    }
     private void chatWithBooksRead(String userId, RequestContext context) {
-        Response response = chatWithBooksService.readChatWithBookRecordsNew(userId, context);
-        logger.info("195124 ChatWithBooksActor chatWithBooksRead Response : "+response);
+        Response response = chatWithBooksService.readChatWithBookRecords(userId, context);
+        logger.info("195124 ChatWithBooksActor chatWithBooksRead Response : "+response.toString());
         sender().tell(response, self());
     }
 }

@@ -3,6 +3,7 @@ package org.sunbird.dao.chatwithbooks;
 import org.sunbird.request.RequestContext;
 import org.sunbird.response.Response;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ChatWithBooksDao {
@@ -25,7 +26,5 @@ public interface ChatWithBooksDao {
      * @param context User Details.
      * @return search details.
      */
-    Response chatWithBooksRead(String userId, RequestContext context);
-
-    Map<String, Object> chatWithBooksReadNew(String userId, RequestContext context);
+    List<Map<String, Object>> chatWithBooksRead(String userId, RequestContext context);
 }
