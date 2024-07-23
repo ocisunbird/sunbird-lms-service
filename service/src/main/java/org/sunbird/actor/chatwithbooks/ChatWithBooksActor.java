@@ -23,7 +23,7 @@ public class ChatWithBooksActor extends BaseActor {
     public void onReceive(Request request) throws Throwable {
         Util.initializeContext(request, TelemetryEnvKey.USER);
         String operation = request.getOperation();
-        logger.info("Operation ChatWithBooksActor : "+operation);
+        logger.info("ChatWithBooksActor onReceive Operation : " + operation);
         RequestContext context = request.getRequestContext();
         switch (operation) {
             case "chatWithBooksSave":
@@ -31,7 +31,7 @@ public class ChatWithBooksActor extends BaseActor {
                 break;
             case "chatWithBooksRead":
                 String userId = (String) request.getRequest().get(JsonKey.USER_ID);
-                chatWithBooksRead(userId,context);
+                chatWithBooksRead(userId, context);
                 break;
             default:
                 onReceiveUnsupportedOperation();
@@ -44,20 +44,22 @@ public class ChatWithBooksActor extends BaseActor {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         chatMapWithBooksMap.put("SearchQueryDate", LocalDateTime.now().format(format));
         //Saving the chat query in DB
-        logger.info("Insert Query :"+chatMapWithBooksMap.toString());
+        logger.info("Insert Query :" + chatMapWithBooksMap);
         Response response = chatWithBooksService.chatWithBookSave(chatMapWithBooksMap, actorMessage.getRequestContext());
         response.put(JsonKey.ID, chatMapWithBooksMap.get(JsonKey.ID));
+        response.setId(JsonKey.CHAT_WITH_BOOKS_SAVE);
+        response.setVer(JsonKey.VERSION_1);
         if (JsonKey.SUCCESS.equalsIgnoreCase((String) response.get(JsonKey.RESPONSE))) {
             logger.info(actorMessage.getRequestContext(), "Search query inserted successfully in Database");
             sender().tell(response, self());
-        }else {
+        } else {
             logger.info(actorMessage.getRequestContext(), "DB Status Failed");
         }
     }
 
     private void chatWithBooksRead(String userId, RequestContext context) {
         Response response = chatWithBooksService.readChatWithBookRecords(userId, context);
-        logger.info("195124 ChatWithBooksActor chatWithBooksRead Response : "+response.toString());
+        logger.info("195124 ChatWithBooksActor chatWithBooksRead Response : " + response.toString());
         sender().tell(response, self());
     }
 }

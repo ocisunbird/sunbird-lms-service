@@ -500,7 +500,6 @@ public abstract class CassandraOperationImpl implements CassandraOperation {
                 });
       }
       selectWhereQuery = selectWhere;
-      logger.info("DB Query Call : "+selectWhere);
       ResultSet results = session.execute(selectWhere);
       response = CassandraUtil.createResponse(results);
     } catch (Exception e) {

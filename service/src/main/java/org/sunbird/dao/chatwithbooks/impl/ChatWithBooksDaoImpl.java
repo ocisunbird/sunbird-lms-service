@@ -5,7 +5,6 @@ import org.sunbird.cassandra.CassandraOperation;
 import org.sunbird.dao.chatwithbooks.ChatWithBooksDao;
 import org.sunbird.helper.ServiceFactory;
 import org.sunbird.keys.JsonKey;
-import org.sunbird.logging.LoggerUtil;
 import org.sunbird.request.RequestContext;
 import org.sunbird.response.Response;
 
@@ -17,9 +16,10 @@ public class ChatWithBooksDaoImpl implements ChatWithBooksDao {
 
     private static final String TABLE_NAME = JsonKey.CHAT_WITH_BOOKS;
     private static final String KEY_SPACE_NAME = JsonKey.SUNBIRD;
-    private List<String> RESPONSE_COLUMN = Arrays.asList("id","userId","searchQuery","searchQueryDate");
-    private final CassandraOperation cassandraOperation = ServiceFactory.getInstance();
     private static ChatWithBooksDao chatWithBooksDao = null;
+    private final CassandraOperation cassandraOperation = ServiceFactory.getInstance();
+    private final List<String> RESPONSE_COLUMN = Arrays.asList("id", "userId", "searchQuery", "searchQueryDate");
+
     public static ChatWithBooksDao getInstance() {
         if (chatWithBooksDao == null) {
             chatWithBooksDao = new ChatWithBooksDaoImpl();
@@ -34,7 +34,7 @@ public class ChatWithBooksDaoImpl implements ChatWithBooksDao {
 
     @Override
     public List<Map<String, Object>> chatWithBooksRead(String userId, RequestContext context) {
-        Response response = cassandraOperation.getRecordById(KEY_SPACE_NAME, TABLE_NAME, userId,RESPONSE_COLUMN, context);
+        Response response = cassandraOperation.getRecordById(KEY_SPACE_NAME, TABLE_NAME, userId, RESPONSE_COLUMN, context);
         List<Map<String, Object>> responseList = (List<Map<String, Object>>) response.get(JsonKey.RESPONSE);
         if (CollectionUtils.isNotEmpty(responseList)) {
             return responseList;
