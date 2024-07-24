@@ -84,7 +84,6 @@ public class RequestInterceptor {
     apiHeaderIgnoreMap.put("/private/user/v1/lookup", var);
     apiHeaderIgnoreMap.put("/private/user/feed/v1/create", var);
     apiHeaderIgnoreMap.put("/v3/user/update",var);
-    apiHeaderIgnoreMap.put("/chatWithBooks/v1/read",var);
   }
 
   private static String getUserRequestedFor(Http.Request request) {
