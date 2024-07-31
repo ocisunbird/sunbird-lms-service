@@ -149,6 +149,7 @@ public enum ActorOperations {
   USER_CURRENT_LOGIN("userCurrentLogin", "USRLOG"),
   //Chat With Books
   CHAT_WITH_BOOKS_SAVE("chatWithBooksSave", "CHATSAVE"),
+  CHAT_WITH_BOOKS_UPDATE("chatWithBooksUpdate", "CHATUPDATE"),
   CHAT_WITH_BOOKS_READ("chatWithBooksRead", "CHATREAD");
 
   private String value;

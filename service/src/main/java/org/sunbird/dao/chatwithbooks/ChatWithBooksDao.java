@@ -12,7 +12,7 @@ public interface ChatWithBooksDao {
      * This method will save the user input data in the database and return userId as success response or throw
      * ProjectCommonException.
      *
-     * @param bookSaveData User Details.
+     * @param bookSaveData Chat With Book Details.
      * @param context
      * @return User ID.
      */
@@ -23,8 +23,18 @@ public interface ChatWithBooksDao {
      * ProjectCommonException.
      *
      * @param userId
-     * @param context User Details.
+     * @param context Chat With Book Details.
      * @return search details.
      */
     List<Map<String, Object>> chatWithBooksRead(String userId, RequestContext context);
+
+    /**
+     * This method will update the user input data in the database and return userId as success response or throw
+     * ProjectCommonException.
+     *
+     * @param bookUpdateData Chat With Book Details.
+     * @param context
+     * @return User ID.
+     */
+    Response chatWithBooksUpdate(Map<String, Object> bookUpdateData, RequestContext context);
 }

@@ -6,7 +6,7 @@ import org.sunbird.response.Response;
 import java.util.Map;
 
 public interface ChatWithBooksService {
-    Response chatWithBookSave(Map<String, Object> user, RequestContext context);
-
-    Response readChatWithBookRecords(String userId, RequestContext context);
+    Response chatWithBookSave(Map<String, Object> chatData, RequestContext context);
+    Response chatWithBookRead(String userId, RequestContext context);
+    Response chatWithBookUpdate(Map<String, Object> chatData, RequestContext context);
 }

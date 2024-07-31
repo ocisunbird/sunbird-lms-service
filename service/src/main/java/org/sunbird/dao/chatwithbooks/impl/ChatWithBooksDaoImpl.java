@@ -41,4 +41,9 @@ public class ChatWithBooksDaoImpl implements ChatWithBooksDao {
         }
         return null;
     }
+
+    @Override
+    public Response chatWithBooksUpdate(Map<String, Object> bookUpdateData, RequestContext context) {
+        return cassandraOperation.upsertRecord(KEY_SPACE_NAME, TABLE_NAME, bookUpdateData, context);
+    }
 }

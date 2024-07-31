@@ -53,4 +53,22 @@ public class ChatWithBooksController extends BaseController {
                 httpRequest
         );
     }
+
+    public CompletionStage<Result> updateChatBookData(Http.Request httpRequest) {
+        System.out.println("ChatWithBooksController updateChatBookData Request : "+httpRequest.toString());
+        return handleRequest(
+                chatWithBooksActor,
+                ActorOperations.CHAT_WITH_BOOKS_UPDATE.getValue(),
+                httpRequest.body().asJson(),
+                req -> {
+                    Request request = (Request) req;
+                    request.getContext().put(JsonKey.VERSION, JsonKey.VERSION_1);
+                    return null;
+                },
+                null,
+                null,
+                true,
+                httpRequest
+        );
+    }
 }
